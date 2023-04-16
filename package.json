@@ -1,12 +1,12 @@
 {
-    "name": "logseq-plugin-template-typescript",
-    "description": "A template for Logseq plugin written in TypeScript",
-    "repository": "https://github.com/YU000jp/logseq-plugin-template-typescript.git",
+    "name": "logseq-plugin-sticky-popup",
+    "description": "Plugin for showing selected text in a movable popup and positioning a block calendar.",
+    "repository": "https://github.com/YU000jp/logseq-plugin-sticky-popup.git",
     "author": "YU000jp",
     "license": "MIT",
     "logseq": {
-        "id": "logseq-plugin-template-typescript",
-        "title": "Template TypeScript",
+        "id": "logseq-plugin-sticky-popup",
+        "title": "Sticky Popup",
         "icon": "./icon.svg",
         "main": "./dist/index.html"
     },

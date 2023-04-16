@@ -1,10 +1,10 @@
-# Logseq Plugin: Template for TypeScript
+# Logseq Plugin: Sticky Popup
 
 - Development stage 👷🚧
 
-[![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-template-typescript)](https://github.com/YU000jp/logseq-plugin-template-typescript/releases)
-[![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-template-typescript?color=blue)](https://github.com/YU000jp/logseq-plugin-template-typescript/LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-template-typescript/total.svg)](https://github.com/YU000jp/logseq-plugin-template-typescript/releases)
+[![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
+[![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
+[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 
 ## Demo
 
@@ -12,7 +12,7 @@
 
 - Press [---] on the top right toolbar to open [Plugins]
 - Select marketplace
-- Type ' ' in the search field, select it from the search results and install
+- Type 'popup' in the search field, select it from the search results and install
 
 ## Other Logseq plugins (My products)
 
