@@ -40,36 +40,7 @@ const main = () => {
 
 
   //グラフの変更時
-  logseq.App.onCurrentGraphChanged(() => {
-    logseq.App.getCurrentGraph().then((graph) => {
-      if (graph) {//デモグラフの場合は返り値がnull
-        graphName = graph.name;
-
-        if (!logseq.settings?.currentGraph) {//設定が存在しない場合
-          return;
-        } else if (logseq.settings?.graphLock === false) {//グラフのロックを解除する場合
-          logseq.updateSettings({
-            screenUuid: "",
-            screenPage: "",
-            stickyLock: false,
-          });
-          mainStickyText(graph.name);
-        } else if (logseq.settings?.currentGraph === graph.name) {//作成時のグラフと一致する場合
-          const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
-          if (divSticky) {
-            divSticky.style.visibility = "unset";
-          }
-          mainStickyText(graph.name);
-        } else {
-          const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
-          if (divSticky) {
-            divSticky.style.visibility = "hidden";
-          }
-        }
-
-      }
-    });
-  });
+  graphChanged();
 
   //CSS
   mainCSS();
@@ -193,7 +164,7 @@ const main = () => {
       Registered in pop-ups and automatically locked. Markdown is not reflected.
       `,
       },
-      {
+      { //select ジャーナルのみ、ジャーナル以外、全てのページ
         key: "stickyTextVisible",
         title: "Sticky Text Visible",
         type: "enum",
@@ -202,7 +173,6 @@ const main = () => {
         description: "Showing Sticky Text or not",
       },
       {
-        //select ジャーナルのみ、ジャーナル以外、全てのページ
         key: "stickyTextZIndex",
         title: "Sticky Text Z-index",
         type: "boolean",
@@ -265,7 +235,43 @@ const main = () => {
   //end Setting changed
 
 
+  //graph changed
+  function graphChanged() {
+    logseq.App.onCurrentGraphChanged(() => {
+      logseq.App.getCurrentGraph().then((graph) => {
+        if (graph) { //デモグラフの場合は返り値がnull
+          graphName = graph.name;
+  
+          if (!logseq.settings?.currentGraph) { //設定が存在しない場合
+            return;
+          } else if (logseq.settings?.graphLock === false) { //グラフのロックを解除する場合
+            logseq.updateSettings({
+              screenUuid: "",
+              screenPage: "",
+              stickyLock: false,
+            });
+            mainStickyText(graph.name);
+          } else if (logseq.settings?.currentGraph === graph.name) { //作成時のグラフと一致する場合
+            const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
+            if (divSticky) {
+              divSticky.style.visibility = "unset";
+            }
+            mainStickyText(graph.name);
+          } else {
+            const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
+            if (divSticky) {
+              divSticky.style.visibility = "hidden";
+            }
+          }
+  
+        }
+      });
+    });
+  }
+//end graph changed
+
 };
+
 //end main
 
 
