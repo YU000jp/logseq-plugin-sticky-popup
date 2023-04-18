@@ -49,7 +49,6 @@ const main = () => {
           return;
         } else if (logseq.settings?.graphLock === false) {//グラフのロックを解除する場合
           logseq.updateSettings({
-            screenText: "",
             screenUuid: "",
             screenPage: "",
             stickyLock: false,
@@ -182,7 +181,7 @@ const main = () => {
         title: "Current Graph",
         type: "string",
         default: "",
-        description: "Current Graph Name",
+        description: "Graph name to lock",
       },
       {
         key: "",
@@ -297,6 +296,10 @@ function mainStickyText(graph: string) {
     if (pageName) {
       toPage = `<button data-on-click="ActionToPage"> > 📄${pageName}</button>`;
     }
+    let toRightSidebar = "";
+    if(uuid){
+      toRightSidebar = `<button data-on-click="ActionToRightSidebar"> > 👉On right-Sidebar</button><br/>`;
+      }
     return {
       key: `sticky`,
       reset: true,
@@ -304,7 +307,7 @@ function mainStickyText(graph: string) {
         <div style="padding:10px;overflow:auto">
             <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default"><span id="stickyLock">🔒</span> ${text}</a></p>
           <div style="position:absolute;bottom:0;font-size:small">
-            <button data-on-click="ActionToRightSidebar"> > 👉On right-Sidebar</button><br/>
+            ${toRightSidebar}
             ${toPage}
           </div>
           <div style="position:absolute;bottom:0;right:0.15em;font-size:small">
@@ -470,7 +473,7 @@ const model = {
     logseq.updateSettings({
       stickyLock: false,
     });
-    if (logseq.settings?.graphLock === false && logseq.settings?.currentGraph !== graphName) {
+    if (logseq.settings?.graphLock === true && logseq.settings?.currentGraph !== graphName) {
       logseq.UI.showMsg("Sticky Text popup is locked for the graph");
       logseq.showSettingsUI();
     } else {
