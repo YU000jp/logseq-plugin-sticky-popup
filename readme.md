@@ -1,12 +1,14 @@
 # Logseq Plugin: Sticky Popup
 
-- Development stage 👷🚧
+- Plugin for showing selected text in a movable popup and positioning a block calendar.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 
 ## Demo
+
+![someautomaticmarkdownlink (7)](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
 
 ## Features
 
@@ -22,7 +24,7 @@
 
 ## Question
 
-- To reopen a popup, launch the command palette and select either "Open Sticky Text popup" or "Open Sticky Calendar popup".
+- To reopen a popup, press on 📌button in the toolbar
 
 ## Other Logseq plugins (My products)
 
