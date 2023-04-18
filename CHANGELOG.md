@@ -3,6 +3,14 @@
 
 ### Features
 
+* Fix bugs on plugin release ([352ed7c](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/352ed7cca838b465e996becfaab10ef6bc6808c3))
+* Fix bugs on plugin release ([1ebdee4](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/1ebdee441ddf6e3c6cdc8ab9bbc82f7bc66cfe35))
+
+# [1.4.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.3.0...v1.4.0) (2023-04-18)
+
+
+### Features
+
 * Fix bugs on plugin release ([1ebdee4](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/1ebdee441ddf6e3c6cdc8ab9bbc82f7bc66cfe35))
 
 # [1.3.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.2.0...v1.3.0) (2023-04-18)
