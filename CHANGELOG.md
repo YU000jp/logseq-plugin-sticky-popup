@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.2.0...v1.3.0) (2023-04-18)
+
+
+### Features
+
+* **calendar:** enable rendering when toolbar is opened ([9a58c8c](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/9a58c8c346f9130956264084d320ed11114d8add))
+
 # [1.2.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.1.0...v1.2.0) (2023-04-18)
 
 
