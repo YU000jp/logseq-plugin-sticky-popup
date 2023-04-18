@@ -1,13 +1,14 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { BlockEntity, PageEntity, SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
 
+  let graphName = "";//For command pallet
 
 //main
 const main = () => {
 
 
   //check current graph
-  let graphName = "";//For command pallet
+
   logseq.App.getCurrentGraph().then((graph) => {
     if (graph) {
       graphName = graph.name;
@@ -66,7 +67,7 @@ const main = () => {
             divSticky.style.visibility = "hidden";
           }
         }
-      
+
       }
     });
   });
@@ -79,19 +80,12 @@ const main = () => {
   setCSSclass();
 
 
-  //command pallet
-  logseq.App.registerCommandPalette({
-    key: "sticky-text",
-    label: "sticky-popup: Open sticky-text popup",
-  }, async () => {
-    mainStickyText(graphName);
+  //toolbar-item
+  logseq.App.registerUIItem("toolbar", {
+    key: 'sticky-popup-open',
+    template: `<div data-on-click="openFromToolbar" style="font-size:20px">📌</div>`,
   });
-  logseq.App.registerCommandPalette({
-    key: "sticky-calendar",
-    label: "sticky-popup: Open sticky-calendar popup",
-  }, async () => {
-    mainStickyCalendar();
-  });
+
 
   //main support
   parent.document.body.classList.add('is-plugin-sticky-popup-enabled');
@@ -144,7 +138,7 @@ const main = () => {
   body:not(.sp-textZIndex) div#sticky-popup--sticky,
   body:not(.sp-calendarZIndex) div#sticky-popup--sticky-calendar {
     z-index: 1!important;
-  }import { *asEta } from 'eta';
+  }
 
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
     z-index: var(--ls-z-index-level-5);
@@ -471,6 +465,18 @@ const model = {
   ActionToPage() {
     stickyPosition("sticky-popup--sticky");
     logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
+  },
+  openFromToolbar() {
+    logseq.updateSettings({
+      stickyLock: false,
+    });
+    if (logseq.settings?.graphLock === false && logseq.settings?.currentGraph !== graphName) {
+      logseq.UI.showMsg("Sticky Text popup is locked for the graph");
+      logseq.showSettingsUI();
+    } else {
+      mainStickyText(graphName);
+    }
+    mainStickyCalendar();
   },
 };
 //end model
