@@ -52,16 +52,16 @@ const main = () => {
 
   //toolbar-item
   logseq.App.registerUIItem("toolbar", {
-    key: 'sticky-popup-open',
+    key: 'logseq-plugin-sticky-popup-open',
     template: `<div data-on-click="openFromToolbar" style="font-size:20px">📌</div>`,
   });
 
 
   //main support
-  parent.document.body.classList.add('is-plugin-sticky-popup-enabled');
+  parent.document.body.classList.add('is-plugin-logseq-plugin-sticky-popup-enabled');
   logseq.beforeunload(async () => {
-    parent.document.body.classList.remove('is-plugin-sticky-popup-enabled');
-    await stickyPosition("sticky-popup--sticky");
+    parent.document.body.classList.remove('is-plugin-logseq-plugin-sticky-popup-enabled');
+    await stickyPosition("logseq-plugin-sticky-popup--sticky");
   });
 
 
@@ -92,40 +92,40 @@ const main = () => {
   //main CSS
   function mainCSS() {
     logseq.provideStyle(String.raw`
-  body.is-pdf-active div#sticky-popup--sticky,
-  body.is-pdf-active div#sticky-popup--sticky-calendar,
-  body:not([data-page="home"]).sp-textVisible-Journal div#sticky-popup--sticky,
-  body:not([data-page="page"]).sp-textVisible-Not-Journal div#sticky-popup--sticky,
-  body.sp-textVisible-None div#sticky-popup--sticky,
-  body:not([data-page="home"]).sp-calendarVisible-Journal div#sticky-popup--sticky-calendar,
-  body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#sticky-popup--sticky-calendar,
-  body.sp-calendarVisible-None div#sticky-popup--sticky-calendar {
+  body.is-pdf-active div#logseq-plugin-sticky-popup--sticky,
+  body.is-pdf-active div#logseq-plugin-sticky-popup--sticky-calendar,
+  body:not([data-page="home"]).sp-textVisible-Journal div#logseq-plugin-sticky-popup--sticky,
+  body:not([data-page="page"]).sp-textVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky,
+  body.sp-textVisible-None div#logseq-plugin-sticky-popup--sticky,
+  body:not([data-page="home"]).sp-calendarVisible-Journal div#logseq-plugin-sticky-popup--sticky-calendar,
+  body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky-calendar,
+  body.sp-calendarVisible-None div#logseq-plugin-sticky-popup--sticky-calendar {
     display: none;
   }
 
   /* TODO: Navigation menuが隠れる件(Sticky Textが上になる) */
 
-  body:not(.sp-textZIndex) div#sticky-popup--sticky,
-  body:not(.sp-calendarZIndex) div#sticky-popup--sticky-calendar {
+  body:not(.sp-textZIndex) div#logseq-plugin-sticky-popup--sticky,
+  body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar {
     z-index: 1!important;
   }
 
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
     z-index: var(--ls-z-index-level-5);
   }
-  div#sticky-popup--sticky {
+  div#logseq-plugin-sticky-popup--sticky {
     min-width: 260px;
     max-width: 780px;
     min-height: 120px;
     max-height: 500px;
   }
-  div#sticky-popup--sticky-calendar {
+  div#logseq-plugin-sticky-popup--sticky-calendar {
     min-width: 295px;
     max-width: 360px;
     min-height: 280px;
     max-height: 320px;
   }
-  div#sticky-popup--sticky-calendar div.ls-ui-float-content {
+  div#logseq-plugin-sticky-popup--sticky-calendar div.ls-ui-float-content {
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -252,13 +252,13 @@ const main = () => {
             });
             mainStickyText(graph.name);
           } else if (logseq.settings?.currentGraph === graph.name) { //作成時のグラフと一致する場合
-            const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
+            const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
             if (divSticky) {
               divSticky.style.visibility = "unset";
             }
             mainStickyText(graph.name);
           } else {
-            const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
+            const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
             if (divSticky) {
               divSticky.style.visibility = "hidden";
             }
@@ -289,7 +289,7 @@ function mainStickyText(graph: string) {
         stickyUnlock.style.display = "unset";
       }
     } else {
-      stickyPosition("sticky-popup--sticky");
+      stickyPosition("logseq-plugin-sticky-popup--sticky");
       logseq.updateSettings({
         currentGraph: graph,
         screenText: text,
@@ -338,7 +338,7 @@ function mainStickyText(graph: string) {
   };
   //選択したテキストをdraggableゾーン(Sticky)に表示
   logseq.Editor.onInputSelectionEnd(async (event) => {
-    const divSticky = parent.document.getElementById("sticky-popup--sticky") as HTMLDivElement;
+    const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
     if (logseq.settings?.stickyLock === true && divSticky) {
       return;
     } else if (logseq.settings?.ScreenText) {
@@ -410,14 +410,14 @@ const stickyPosition = (elementId: string) => {
       const y: number = Math.round(rect.y);
       const width = element.style.width;
       const height = element.style.height;
-      if (elementId === "sticky-popup--sticky") {
+      if (elementId === "logseq-plugin-sticky-popup--sticky") {
         logseq.updateSettings({
           screenX: x || logseq.settings?.screenX,
           screenY: y || logseq.settings?.screenY,
           screenWidth: width || logseq.settings?.screenWidth,
           screenHeight: height || logseq.settings?.screenHeight,
         });
-      } else if (elementId === "sticky-popup--sticky-calendar") {
+      } else if (elementId === "logseq-plugin-sticky-popup--sticky-calendar") {
         logseq.updateSettings({
           calendarScreenX: x || logseq.settings?.calendarScreenX,
           calendarScreenY: y || logseq.settings?.calendarScreenY,
@@ -434,11 +434,11 @@ const stickyPosition = (elementId: string) => {
 //model
 const model = {
   stickyPinned() {
-    stickyPosition("sticky-popup--sticky");
+    stickyPosition("logseq-plugin-sticky-popup--sticky");
     logseq.UI.showMsg("pinned", "success");
   },
   stickyCalendarPinned() {
-    stickyPosition("sticky-popup--sticky-calendar");
+    stickyPosition("logseq-plugin-sticky-popup--sticky-calendar");
     logseq.UI.showMsg("pinned", "success");
   },
   stickyCalendarReset() {
@@ -448,7 +448,7 @@ const model = {
     }, 20);
   },
   ActionUnlock() {
-    stickyPosition("sticky-popup--sticky");
+    stickyPosition("logseq-plugin-sticky-popup--sticky");
     logseq.updateSettings({
       stickyLock: false,
     });
@@ -463,11 +463,11 @@ const model = {
     logseq.UI.showMsg("Unlocked", "success");
   },
   ActionToRightSidebar() {
-    stickyPosition("sticky-popup--sticky");
+    stickyPosition("logseq-plugin-sticky-popup--sticky");
     logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
   },
   ActionToPage() {
-    stickyPosition("sticky-popup--sticky");
+    stickyPosition("logseq-plugin-sticky-popup--sticky");
     logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
   },
   openFromToolbar() {
@@ -480,7 +480,7 @@ const model = {
     } else {
       mainStickyText(graphName);
     }
-    const div = parent.document.getElementById("sticky-popup--sticky-calendar") as HTMLDivElement;
+    const div = parent.document.getElementById("logseq-plugin-sticky-popup--sticky-calendar") as HTMLDivElement;
     if (!div) {
       mainStickyCalendar();
       logseq.App.setRightSidebarVisible("toggle");

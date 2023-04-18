@@ -1,11 +1,11 @@
 {
-    "name": "sticky-popup",
+    "name": "logseq-plugin-sticky-popup",
     "description": "Plugin for showing selected text in a movable popup and positioning calendar.",
     "repository": "https://github.com/YU000jp/logseq-plugin-sticky-popup.git",
     "author": "YU000jp",
     "license": "MIT",
     "logseq": {
-        "id": "sticky-popup",
+        "id": "logseq-plugin-sticky-popup",
         "title": "Sticky Popup",
         "icon": "./icon.svg",
         "main": "./dist/index.html"
