@@ -4,7 +4,7 @@
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
+[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) created 2023/04/18
 
 ## Demo
 
@@ -29,11 +29,13 @@
   
 </details>
 
-## Install from Marketplace (Coming👷🚧)
+## Install from Marketplace
 
 - Press [---] on the top right toolbar to open [Plugins]
 - Select marketplace
 - Type 'popup' in the search field, select it from the search results and install
+
+![image](https://user-images.githubusercontent.com/111847207/232879519-8376669d-3f20-4b28-b0cc-6993c25140b7.png)
 
 ## Question
 
