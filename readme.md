@@ -6,6 +6,8 @@
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) created 2023/04/18
 
+> Try bugs on plugin release
+
 ## Demo
 
 ![someautomaticmarkdownlink (7)](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
