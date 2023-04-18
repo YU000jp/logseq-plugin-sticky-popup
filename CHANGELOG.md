@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.1.0...v1.2.0) (2023-04-18)
+
+
+### Features
+
+* address minor improvements and bug fixes ([b6860bc](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/b6860bc5a33199a7df571c755ce1c01ff8d94213))
+
 # [1.1.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.0.0...v1.1.0) (2023-04-18)
 
 
