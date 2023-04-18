@@ -1,7 +1,7 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { BlockEntity, PageEntity, SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
 
-  let graphName = "";//For command pallet
+let graphName = "";//For command pallet
 
 //main
 const main = () => {
@@ -297,9 +297,9 @@ function mainStickyText(graph: string) {
       toPage = `<button data-on-click="ActionToPage"> > 📄${pageName}</button>`;
     }
     let toRightSidebar = "";
-    if(uuid){
+    if (uuid) {
       toRightSidebar = `<button data-on-click="ActionToRightSidebar"> > 👉On right-Sidebar</button><br/>`;
-      }
+    }
     return {
       key: `sticky`,
       reset: true,
@@ -440,11 +440,6 @@ const model = {
     setTimeout(() => {
       logseq.App.setRightSidebarVisible("toggle");
     }, 20);
-    setTimeout(() => {
-      const div = parent.document.getElementById("sticky-popup--sticky-calendar") as HTMLDivElement;
-      div.style.width = logseq.settings?.calendarScreenWidth + "px";
-      div.style.height = logseq.settings?.calendarScreenHeight + "px";
-    }, 40);
   },
   ActionUnlock() {
     stickyPosition("sticky-popup--sticky");
@@ -479,7 +474,14 @@ const model = {
     } else {
       mainStickyText(graphName);
     }
-    mainStickyCalendar();
+    const div = parent.document.getElementById("sticky-popup--sticky-calendar") as HTMLDivElement;
+    if (!div) {
+      mainStickyCalendar();
+      logseq.App.setRightSidebarVisible("toggle");
+      setTimeout(() => {
+        logseq.App.setRightSidebarVisible("toggle");
+      }, 20);
+    }
   },
 };
 //end model
