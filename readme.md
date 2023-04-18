@@ -14,7 +14,15 @@
 
 ### Sticky Text (Popup)
 
+- Select string and click the same block. Registered in pop-ups and automatically locked. Markdown is not reflected.
+
 ### Sticky Calendar (Popup)
+
+- require rendering of [Block Calendar Plugin](https://github.com/vipzhicheng/logseq-plugin-block-calendar)
+<details>
+<summary>Set 'custom' and '#StickyCalendar'(Provide CSS selector) on the plugin settings</summary>
+<img src="https://user-images.githubusercontent.com/111847207/232676143-c895a94d-c78e-4c85-8ba1-2cf863813957.png"/>
+</details>
 
 ## Install from Marketplace (Coming👷🚧)
 
