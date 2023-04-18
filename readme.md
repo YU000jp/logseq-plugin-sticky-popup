@@ -18,10 +18,15 @@
 
 ### Sticky Calendar (Popup)
 
-- require rendering of [Block Calendar Plugin](https://github.com/vipzhicheng/logseq-plugin-block-calendar)
+- require install [Block Calendar Plugin](https://github.com/vipzhicheng/logseq-plugin-block-calendar) for rendering
 <details>
-<summary>Set 'custom' and '#StickyCalendar'(Provide CSS selector) on the plugin settings</summary>
-<img src="https://user-images.githubusercontent.com/111847207/232676143-c895a94d-c78e-4c85-8ba1-2cf863813957.png"/>
+
+<summary>summary</summary>
+
+- Set `custom`(Widget Location) and `#StickyCalendar`(Provide CSS selector) on the plugin settings
+
+  <img src="https://user-images.githubusercontent.com/111847207/232676143-c895a94d-c78e-4c85-8ba1-2cf863813957.png"/>
+  
 </details>
 
 ## Install from Marketplace (Coming👷🚧)
