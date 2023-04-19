@@ -14,7 +14,7 @@
 
 ### Sticky Text (Popup)
 
-- Select string and click the same block. Registered in pop-ups and automatically locked. Markdown is not reflected.
+- Select text and click the same block. Registered in pop-ups and automatically locked. Markdown is not reflected.
 
 ### Sticky Calendar (Popup)
 
