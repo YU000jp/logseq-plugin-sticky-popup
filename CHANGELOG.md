@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.5.0...v1.5.1) (2023-04-19)
+
+
+### Bug Fixes
+
+* pin function not working ([b3fc553](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/b3fc553cd5fbff6c1fa4f4785e16e43baa647609))
+
 # [1.5.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.4.0...v1.5.0) (2023-04-19)
 
 
