@@ -18,6 +18,7 @@ const main = () => {
 
       //Sticky Text グラフのロック
       if (!logseq.settings?.currentGraph) {//設定が存在しない場合
+        logseq.updateSettings({ currentGraph: graph.name });
         mainStickyText(graph.name);
       } else if (logseq.settings?.currentGraph === graph.name) {//作成時のグラフと一致する場合
         mainStickyText(graph.name);
@@ -131,6 +132,13 @@ const main = () => {
     justify-content: center;
     align-items: center;
   }
+  div#sticker-actions {
+    position:absolute;
+    bottom:0;
+    right:.15em;
+    font-size:small;
+    background:var(--ls-primary-background-color);
+  }
   `);
   }
   //end main CSS
@@ -194,7 +202,7 @@ const main = () => {
         title: "Sticky Calendar Visible",
         type: "enum",
         enumChoices: ["Journal", "Not-Journal", "All", "None"],
-        default: "None",
+        default: "Journal",
         description: "Showing Sticky Calendar or not",
       },
       {
@@ -241,7 +249,7 @@ const main = () => {
       logseq.App.getCurrentGraph().then((graph) => {
         if (graph) { //デモグラフの場合は返り値がnull
           graphName = graph.name;
-  
+
           if (!logseq.settings?.currentGraph) { //設定が存在しない場合
             return;
           } else if (logseq.settings?.graphLock === false) { //グラフのロックを解除する場合
@@ -263,12 +271,12 @@ const main = () => {
               divSticky.style.visibility = "hidden";
             }
           }
-  
+
         }
       });
     });
   }
-//end graph changed
+  //end graph changed
 
 };
 
@@ -278,11 +286,9 @@ const main = () => {
 
 //Sticky Text
 function mainStickyText(graph: string) {
-  const dsl = (flag, text: string, x: number, y: number, width, height, uuid, pageName) => {
-    if (pageName === null) {
-      pageName = "";
-    }
+  const dsl = (flag, text: string, x: number, y: number, width: string, height: string, uuid, pageName) => {
     if (flag.lock === true) {
+
     } else if (logseq.settings?.stickyLock === true) {
       const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement;
       if (stickyUnlock) {
@@ -307,7 +313,7 @@ function mainStickyText(graph: string) {
       toRightSidebar = `<button data-on-click="ActionToRightSidebar"> > 👉On right-Sidebar</button><br/>`;
     }
     return {
-      key: `sticky`,
+      key: 'sticky',
       reset: true,
       template: `
         <div style="padding:10px;overflow:auto">
@@ -316,7 +322,7 @@ function mainStickyText(graph: string) {
             ${toRightSidebar}
             ${toPage}
           </div>
-          <div style="position:absolute;bottom:0;right:0.15em;font-size:small">
+          <div id="sticker-actions">
             <button data-on-click="ActionUnlock" id="stickyUnlock"> > <span style="text-decoration:underline;font-size:1.2em">🔓Unlock</span></button><br/>
             <button data-on-click="stickyPinned"> > 📌pin</button>
           </div>
@@ -348,19 +354,48 @@ function mainStickyText(graph: string) {
       const currentPage = await logseq.Editor.getCurrentPage() as PageEntity;
       if (current) {
         const PageName = currentPage?.name || "";
-        const x: number = logseq.settings?.screenX || event.point.x + 100;
-        const y: number = logseq.settings?.screenY || event.point.y + 100;
-        const width: number = logseq.settings?.screenWidth || 340;
-        const height: number = logseq.settings?.screenHeight || 160;
+        const x: number = logseq.settings?.screenX || 5;//event.point.x + 100
+        const y: number = logseq.settings?.screenY || 695;//event.point.y + 100
+        const width: string = logseq.settings?.screenWidth || "195px";
+        const height: string = logseq.settings?.screenHeight || "225px";
         await logseq.provideUI(dsl({}, event.text, x, y, width, height, current.uuid, PageName));
       }
     }
   });
 
-  //再開時に表示
+  //読み込み時
   if (logseq.settings?.screenText) {
     logseq.provideUI(dsl({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage));
+  } else {//値がない場合(初回)
+    const dsl = () => {
+      return {
+        key: 'sticky',
+        reset: true,
+        template: `
+          <div style="padding:10px;overflow:auto">
+              <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default">📝Select text</a></p>
+            <div id="sticker-actions">
+              <button data-on-click="stickyPinned"> > 📌pin</button>
+            </div>
+          </div>
+        `,
+        style: {
+          left: logseq.settings?.screenX || 5 + 'px',
+          top: logseq.settings?.screenY || 695 + 'px',
+          width: logseq.settings?.screenWidth || "195px",
+          height: logseq.settings?.screenHeight || "225px",
+          backgroundColor: 'var(--ls-primary-background-color)',
+          color: 'var(--ls-primary-text-color)',
+          boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
+        },
+        attrs: {
+          title: 'Sticky Text',
+        },
+      }
+    }
+    logseq.provideUI(dsl());
   }
+
 }
 //end Sticky Text
 
@@ -368,10 +403,6 @@ function mainStickyText(graph: string) {
 //Sticky Calendar
 function mainStickyCalendar() {
   const dsl = () => {
-    const x = logseq.settings?.calendarScreenX || 700;
-    const y = logseq.settings?.calendarScreenY || 700;
-    const width = logseq.settings?.calendarScreenWidth || 320;
-    const height = logseq.settings?.calendarScreenHeight || 300;
     return {
       key: `sticky-calendar`,
       reset: true,
@@ -383,10 +414,10 @@ function mainStickyCalendar() {
     </div>
   `,
       style: {
-        left: x + 'px',
-        top: y + 'px',
-        width: width,
-        height: height,
+        left: logseq.settings?.calendarScreenX || 700 + 'px',
+        top: logseq.settings?.calendarScreenY || 700 + 'px',
+        width: logseq.settings?.calendarScreenWidth || "320px",
+        height: logseq.settings?.calendarScreenHeight || "300px",
         backgroundColor: 'var(--ls-primary-background-color)',
         color: 'var(--ls-primary-text-color)',
         boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
@@ -408,8 +439,8 @@ const stickyPosition = (elementId: string) => {
     if (rect) {
       const x: number = Math.round(rect.x);
       const y: number = Math.round(rect.y);
-      const width = element.style.width;
-      const height = element.style.height;
+      const width: string = element.style.width;
+      const height: string = element.style.height;
       if (elementId === "logseq-plugin-sticky-popup--sticky") {
         logseq.updateSettings({
           screenX: x || logseq.settings?.screenX,
@@ -442,10 +473,12 @@ const model = {
     logseq.UI.showMsg("pinned", "success");
   },
   stickyCalendarReset() {
-    logseq.App.setRightSidebarVisible("toggle");
     setTimeout(() => {
       logseq.App.setRightSidebarVisible("toggle");
-    }, 20);
+    }, 10);
+    setTimeout(() => {
+      logseq.App.setRightSidebarVisible("toggle");
+    }, 30);
   },
   ActionUnlock() {
     stickyPosition("logseq-plugin-sticky-popup--sticky");
@@ -470,10 +503,7 @@ const model = {
     stickyPosition("logseq-plugin-sticky-popup--sticky");
     logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
   },
-  openFromToolbar() {
-    logseq.updateSettings({
-      stickyLock: false,
-    });
+  async openFromToolbar() {
     if (logseq.settings?.graphLock === true && logseq.settings?.currentGraph !== graphName) {
       logseq.UI.showMsg("Sticky Text popup is locked for the graph");
       logseq.showSettingsUI();
@@ -482,11 +512,13 @@ const model = {
     }
     const div = parent.document.getElementById("logseq-plugin-sticky-popup--sticky-calendar") as HTMLDivElement;
     if (!div) {
-      mainStickyCalendar();
-      logseq.App.setRightSidebarVisible("toggle");
+      await mainStickyCalendar();
       setTimeout(() => {
         logseq.App.setRightSidebarVisible("toggle");
-      }, 20);
+      }, 10);
+      setTimeout(() => {
+        logseq.App.setRightSidebarVisible("toggle");
+      }, 30);
     }
   },
 };
