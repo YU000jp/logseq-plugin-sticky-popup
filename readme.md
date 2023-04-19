@@ -1,6 +1,6 @@
 # Logseq Plugin: Sticky Popup
 
-- Plugin for showing selected text in a movable popup and positioning calendar.
+- Plugin for showing selected text in a movable pop-up and positioning calendar.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
@@ -12,11 +12,11 @@
 
 ## Features
 
-### Sticky Text (Popup)
+### Sticky Text (Pop-up)
 
 - Select text and click the same block. Registered in pop-up and automatically locked. Markdown is not reflected.
 
-### Sticky Calendar (Popup)
+### Sticky Calendar (Pop-up)
 
 - require install [Block Calendar Plugin](https://github.com/vipzhicheng/logseq-plugin-block-calendar) for rendering
 
