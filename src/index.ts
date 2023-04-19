@@ -80,10 +80,10 @@ const main = () => {
     if (logseq.settings?.stickyCalendarVisible) {
       parent.document.body.classList.add(`sp-calendarVisible-${logseq.settings.stickyCalendarVisible}`);
     }
-    if (logseq.settings?.stickyCalendarZIndex) {
+    if (!logseq.settings?.stickyCalendarZIndex || logseq.settings?.stickyCalendarZIndex === true) {
       parent.document.body.classList.add("sp-calendarZIndex");
     }
-    if (logseq.settings?.stickyTextZIndex) {
+    if (!logseq.settings?.stickyTextZIndex || logseq.settings?.stickyTextZIndex === true) {
       parent.document.body.classList.add("sp-textZIndex");
     }
   }
@@ -110,7 +110,6 @@ const main = () => {
   body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar {
     z-index: 1!important;
   }
-
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
     z-index: var(--ls-z-index-level-5);
   }
@@ -286,7 +285,7 @@ const main = () => {
 
 //Sticky Text
 function mainStickyText(graph: string) {
-  const dsl = (flag, text: string, x: number, y: number, width: string, height: string, uuid, pageName) => {
+  const dsl = (flag, text, x, y, width, height, uuid, pageName) => {
     if (flag.lock === true) {
 
     } else if (logseq.settings?.stickyLock === true) {
@@ -354,10 +353,10 @@ function mainStickyText(graph: string) {
       const currentPage = await logseq.Editor.getCurrentPage() as PageEntity;
       if (current) {
         const PageName = currentPage?.name || "";
-        const x: number = logseq.settings?.screenX || 5;//event.point.x + 100
-        const y: number = logseq.settings?.screenY || 695;//event.point.y + 100
-        const width: string = logseq.settings?.screenWidth || "195px";
-        const height: string = logseq.settings?.screenHeight || "225px";
+        const x = logseq.settings?.screenX || 5;//event.point.x + 100
+        const y = logseq.settings?.screenY || 695;//event.point.y + 100
+        const width = logseq.settings?.screenWidth || "195px";
+        const height = logseq.settings?.screenHeight || "225px";
         await logseq.provideUI(dsl({}, event.text, x, y, width, height, current.uuid, PageName));
       }
     }
@@ -368,6 +367,10 @@ function mainStickyText(graph: string) {
     logseq.provideUI(dsl({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage));
   } else {//値がない場合(初回)
     const dsl = () => {
+      const x = (logseq.settings?.screenX || 5) + 'px';
+      const y = (logseq.settings?.screenY || 695) + 'px';
+      const width = logseq.settings?.screenWidth || "195px";
+      const height = logseq.settings?.screenHeight || "225px";
       return {
         key: 'sticky',
         reset: true,
@@ -380,10 +383,10 @@ function mainStickyText(graph: string) {
           </div>
         `,
         style: {
-          left: logseq.settings?.screenX || 5 + 'px',
-          top: logseq.settings?.screenY || 695 + 'px',
-          width: logseq.settings?.screenWidth || "195px",
-          height: logseq.settings?.screenHeight || "225px",
+          left: x,
+          top: y,
+          width: width,
+          height: height,
           backgroundColor: 'var(--ls-primary-background-color)',
           color: 'var(--ls-primary-text-color)',
           boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
@@ -403,6 +406,10 @@ function mainStickyText(graph: string) {
 //Sticky Calendar
 function mainStickyCalendar() {
   const dsl = () => {
+    const x = logseq.settings?.calendarScreenX || 700;
+    const y = logseq.settings?.calendarScreenY || 700;
+    const width = logseq.settings?.calendarScreenWidth || "320px";
+    const height = logseq.settings?.calendarScreenHeight || "300px";
     return {
       key: `sticky-calendar`,
       reset: true,
@@ -414,10 +421,10 @@ function mainStickyCalendar() {
     </div>
   `,
       style: {
-        left: logseq.settings?.calendarScreenX || 700 + 'px',
-        top: logseq.settings?.calendarScreenY || 700 + 'px',
-        width: logseq.settings?.calendarScreenWidth || "320px",
-        height: logseq.settings?.calendarScreenHeight || "300px",
+        left: x + 'px',
+        top: y + 'px',
+        width: width,
+        height: height,
         backgroundColor: 'var(--ls-primary-background-color)',
         color: 'var(--ls-primary-text-color)',
         boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
@@ -439,8 +446,8 @@ const stickyPosition = (elementId: string) => {
     if (rect) {
       const x: number = Math.round(rect.x);
       const y: number = Math.round(rect.y);
-      const width: string = element.style.width;
-      const height: string = element.style.height;
+      const width = element.style.width;
+      const height = element.style.height;
       if (elementId === "logseq-plugin-sticky-popup--sticky") {
         logseq.updateSettings({
           screenX: x || logseq.settings?.screenX,
