@@ -4,6 +4,10 @@
 ### Features
 
 * **release:** Fix issues with Unlock page, change to button format, update default settings ([ce16479](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/ce16479674777a67850a26918c269444f15d53c6))
+  - Modified ”Unlock” so that it no longer overlaps with long page names
+  - Updated the default settings
+  - Created an initial display for first-time user
+  - Modified the process for refreshing calendar display
 
 # [1.4.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.3.0...v1.4.0) (2023-04-18)
 
