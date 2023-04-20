@@ -16,6 +16,10 @@
 
 - Select text and click the same block. Registered in pop-up and automatically locked. Markdown is not reflected.
 
+![image](https://user-images.githubusercontent.com/111847207/233242187-439de5d6-164b-4818-8660-850cd90f11f1.png)
+
+ "Unlock" is a button that overwrites the next selected text, and "pin" is a button that saves the position of the popup.
+ 
 ### Sticky Calendar (Pop-up)
 
 - require install [Block Calendar Plugin](https://github.com/vipzhicheng/logseq-plugin-block-calendar) for rendering
@@ -23,8 +27,10 @@
 - Set `custom`(Widget Location) and `#StickyCalendar`(Provide CSS selector) on the plugin settings
 
   <details><summary>summary</summary>
-
+  
   <img src="https://user-images.githubusercontent.com/111847207/232676143-c895a94d-c78e-4c85-8ba1-2cf863813957.png"/>
+  
+  >Settings of Block Calendar plugin
   
 </details>
 
