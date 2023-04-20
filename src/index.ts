@@ -268,13 +268,13 @@ const main = () => {
           } else if (logseq.settings?.currentGraph === graph.name) { //作成時のグラフと一致する場合
             const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
             if (divSticky) {
-              divSticky.style.visibility = "unset";
+              divSticky.style.display = "unset";
             }
             mainStickyText(graph.name);
           } else {
             const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
             if (divSticky) {
-              divSticky.style.visibility = "hidden";
+              divSticky.style.display = "none";
             }
           }
 
@@ -384,7 +384,7 @@ function mainStickyText(graph: string) {
         template: `
           <div style="padding:10px;overflow:auto">
               <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default" title="Select any text">📝Select any text</a></p>
-            <div id="sticker-actions-right">
+            <div id="sticky-actions-right">
               <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
             </div>
           </div>
