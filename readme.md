@@ -16,7 +16,8 @@
 
 ### Sticky Text (Pop-up)
 
-- Select text and click the same block. Registered in pop-up and automatically locked. Markdown is not reflected.
+- Select text and click the same block. Registered in pop-up and automatically locked.
+> Markdown is not reflected.
 
 ![image](https://user-images.githubusercontent.com/111847207/233500354-a9302519-a0ee-4d0c-b9b9-0b7ffe4bd24e.png)
 
