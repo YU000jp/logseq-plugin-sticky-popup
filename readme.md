@@ -1,6 +1,6 @@
 # Logseq Plugin: Sticky Popup
 
-- Plugin for showing selected text in a movable pop-up and positioning calendar. Pop-ups possible to be moved around and resized.
+- Plugin for showing selected text in a movable pop-up and positioning calendar.
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
@@ -8,25 +8,34 @@
 
 ## Demo
 
+> Pop-ups possible to be moved around and resized.
+
 ![someautomaticmarkdownlink (7)](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
 
 ## Features
 
 ### Sticky Text (Pop-up)
 
-- Select text and click the same block. Registered in pop-up and automatically locked. Markdown is not reflected.
+- Select text and click the same block. Registered in pop-up and automatically locked.
+> Markdown is not reflected.
 
-![image](https://user-images.githubusercontent.com/111847207/233242187-439de5d6-164b-4818-8660-850cd90f11f1.png)
+![image](https://user-images.githubusercontent.com/111847207/233500354-a9302519-a0ee-4d0c-b9b9-0b7ffe4bd24e.png)
 
  "Unlock" is a button that overwrites the next selected text, and "pin" is a button that saves the position of the popup.
  
 ### Sticky Calendar (Pop-up)
 
+<details><summary>Sample</summary>
+  
+![image](https://user-images.githubusercontent.com/111847207/233500548-4c46d364-5b48-4f23-bf72-1cc6be96e0d2.png)
+
+</details>
+
 - require install [Block Calendar Plugin](https://github.com/vipzhicheng/logseq-plugin-block-calendar) for rendering
 
 - Set `custom`(Widget Location) and `#StickyCalendar`(Provide CSS selector) on the plugin settings
 
-  <details><summary>summary</summary>
+  <details><ummary>Summary</summary>
   
   <img src="https://user-images.githubusercontent.com/111847207/232676143-c895a94d-c78e-4c85-8ba1-2cf863813957.png"/>
   
