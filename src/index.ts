@@ -131,11 +131,18 @@ const main = () => {
     justify-content: center;
     align-items: center;
   }
-  div#sticker-actions {
+  div#sticky-actions-left {
     position:absolute;
     bottom:0;
-    right:.15em;
     font-size:small;
+    background:var(--ls-primary-background-color);
+    margin-right:6.5em;
+  }
+  div#sticky-actions-right {
+    position: absolute;
+    bottom: 0;
+    right: .15em;
+    font-size: small;
     background:var(--ls-primary-background-color);
   }
   `);
@@ -305,25 +312,25 @@ function mainStickyText(graph: string) {
     }
     let toPage = "";
     if (pageName) {
-      toPage = `<button data-on-click="ActionToPage"> > 📄${pageName}</button>`;
+
+      toPage = `<button data-on-click="ActionToPage" title="To the page [[${encodeHtml(pageName)}]]" style="overflow:auto">📄${pageName}</button>`;
     }
     let toRightSidebar = "";
     if (uuid) {
-      toRightSidebar = `<button data-on-click="ActionToRightSidebar"> > 👉On right-Sidebar</button><br/>`;
+      toRightSidebar = `<button data-on-click="ActionToRightSidebar" title="On right sidebar">👉On right-Sidebar</button><br/>`;
     }
     return {
       key: 'sticky',
       reset: true,
       template: `
         <div style="padding:10px;overflow:auto">
-            <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default"><span id="stickyLock">🔒</span> ${text}</a></p>
-          <div style="position:absolute;bottom:0;font-size:small">
-            ${toRightSidebar}
-            ${toPage}
+            <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" title="${encodeHtml(text)}">${text}</a></p>
+          <div id="sticky-actions-left">
+            ${toRightSidebar}${toPage}
           </div>
-          <div id="sticker-actions">
-            <button data-on-click="ActionUnlock" id="stickyUnlock"> > <span style="text-decoration:underline;font-size:1.2em">🔓Unlock</span></button><br/>
-            <button data-on-click="stickyPinned"> > 📌pin</button>
+          <div id="sticky-actions-right">
+            <button data-on-click="ActionUnlock" id="stickyUnlock"><span style="text-decoration:underline;font-size:1.2em" title="Unlock: Overwrites the next selected text">🔓Unlock</span></button><br/>
+            <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
           </div>
         </div>
       `,
@@ -376,9 +383,9 @@ function mainStickyText(graph: string) {
         reset: true,
         template: `
           <div style="padding:10px;overflow:auto">
-              <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default">📝Select text</a></p>
-            <div id="sticker-actions">
-              <button data-on-click="stickyPinned"> > 📌pin</button>
+              <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default" title="Select any text">📝Select any text</a></p>
+            <div id="sticker-actions-right">
+              <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
             </div>
           </div>
         `,
@@ -416,8 +423,7 @@ function mainStickyCalendar() {
       template: `
     <div id="StickyCalendar" style="overflow:hidden"></div>
     <div style="position:absolute;bottom:0;right:0.15em;font-size:small">
-      <button data-on-click="stickyCalendarReset"> > 🎮reset</button> 
-      <button data-on-click="stickyCalendarPinned"> > 📌pin</button>
+      <button data-on-click="stickyCalendarReset" title="Reload: For re-rendering">🎮Reload</button> <button data-on-click="stickyCalendarPinned" title="Pin: saves the position of this popup">📌Pin</button>
     </div>
   `,
       style: {
@@ -469,6 +475,22 @@ const stickyPosition = (elementId: string) => {
 //end Sticky Calendar
 
 
+//encodeHtml
+function encodeHtml(str: string): string {
+  const htmlEntities = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;'
+  };
+  return String(str).replace(/[&<>"'/]/g, function (s) {
+    return htmlEntities[s];
+  });
+}
+
+
 //model
 const model = {
   stickyPinned() {
@@ -506,9 +528,14 @@ const model = {
     stickyPosition("logseq-plugin-sticky-popup--sticky");
     logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
   },
-  ActionToPage() {
+  async ActionToPage() {
     stickyPosition("logseq-plugin-sticky-popup--sticky");
+    const getPage = await logseq.Editor.getPage(logseq.settings?.screenPage);
+    if(getPage){
     logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
+    }else{
+      logseq.UI.showMsg("Page not found", "error");
+    }
   },
   async openFromToolbar() {
     if (logseq.settings?.graphLock === true && logseq.settings?.currentGraph !== graphName) {
