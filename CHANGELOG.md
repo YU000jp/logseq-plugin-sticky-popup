@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.5.1...v1.6.0) (2023-04-20)
+
+
+### Features
+
+* **menu): add tooltip feature fix(page:** handle non-existent page error ([7306b2a](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/7306b2a98a09314dd3ad93766ffe44079b55748b))
+
 ## [1.5.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.5.0...v1.5.1) (2023-04-19)
 
 
