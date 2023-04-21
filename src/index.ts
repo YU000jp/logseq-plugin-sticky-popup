@@ -226,6 +226,11 @@ const main = () => {
 
   // Setting changed
   const onSettingsChangedCallback = (newSet, oldSet) => {
+    if (newSet.graphLock === false) {
+      logseq.updateSettings({
+        stickyLock: false,
+      });
+    }
     if (oldSet.stickyTextVisible && newSet.stickyTextVisible) {
       parent.document.body.classList.remove(`sp-textVisible-${oldSet.stickyTextVisible}`);
       parent.document.body.classList.add(`sp-textVisible-${newSet.stickyTextVisible}`);
@@ -259,11 +264,13 @@ const main = () => {
 
           if (!logseq.settings?.currentGraph || logseq.settings?.graphLock === false) { //グラフのロックを解除する場合
             logseq.updateSettings({
+              screenText: "",
+              currentGraph: graph.name,
               screenUuid: "",
               screenPage: "",
               stickyLock: false,
             });
-            mainStickyText(graph.name);
+            newStickyText();
           } else if (logseq.settings?.currentGraph === graph.name) { //作成時のグラフと一致する場合
             const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
             if (divSticky) {
@@ -350,7 +357,10 @@ function mainStickyText(graph: string) {
   //選択したテキストをdraggableゾーン(Sticky)に表示
   logseq.Editor.onInputSelectionEnd(async (event) => {
     const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
-    if (logseq.settings?.stickyLock === true && divSticky) {
+    if (divSticky) {
+      divSticky.style.display = "unset";
+    }
+    if (logseq.settings?.stickyLock === true) {
       return;
     } else if (logseq.settings?.ScreenText) {
       logseq.provideUI(dsl({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage));
@@ -372,15 +382,22 @@ function mainStickyText(graph: string) {
   if (logseq.settings?.screenText) {
     logseq.provideUI(dsl({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage));
   } else {//値がない場合(初回)
-    const dsl = () => {
-      const x = (logseq.settings?.screenX || 5) + 'px';
-      const y = (logseq.settings?.screenY || 695) + 'px';
-      const width = logseq.settings?.screenWidth || "195px";
-      const height = logseq.settings?.screenHeight || "225px";
-      return {
-        key: 'sticky',
-        reset: true,
-        template: `
+    newStickyText();
+  }
+
+}
+
+//初回
+function newStickyText() {
+  const dsl = () => {
+    const x = (logseq.settings?.screenX || 5) + 'px';
+    const y = (logseq.settings?.screenY || 695) + 'px';
+    const width = logseq.settings?.screenWidth || "195px";
+    const height = logseq.settings?.screenHeight || "225px";
+    return {
+      key: 'sticky',
+      reset: true,
+      template: `
           <div style="padding:10px;overflow:auto">
               <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default" title="Select any text">📝Select any text</a></p>
             <div id="sticky-actions-right">
@@ -388,24 +405,23 @@ function mainStickyText(graph: string) {
             </div>
           </div>
         `,
-        style: {
-          left: x,
-          top: y,
-          width: width,
-          height: height,
-          backgroundColor: 'var(--ls-primary-background-color)',
-          color: 'var(--ls-primary-text-color)',
-          boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
-        },
-        attrs: {
-          title: 'Sticky Text',
-        },
-      }
-    }
-    logseq.provideUI(dsl());
-  }
-
+      style: {
+        left: x,
+        top: y,
+        width: width,
+        height: height,
+        backgroundColor: 'var(--ls-primary-background-color)',
+        color: 'var(--ls-primary-text-color)',
+        boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
+      },
+      attrs: {
+        title: 'Sticky Text',
+      },
+    };
+  };
+  logseq.provideUI(dsl());
 }
+
 //end Sticky Text
 
 
@@ -530,9 +546,9 @@ const model = {
   async ActionToPage() {
     stickyPosition("logseq-plugin-sticky-popup--sticky");
     const getPage = await logseq.Editor.getPage(logseq.settings?.screenPage);
-    if(getPage){
-    logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
-    }else{
+    if (getPage) {
+      logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
+    } else {
       logseq.UI.showMsg("Page not found", "error");
     }
   },
