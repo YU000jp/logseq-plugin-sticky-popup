@@ -35,13 +35,21 @@
 
 - Set `custom`(Widget Location) and `#StickyCalendar`(Provide CSS selector) on the plugin settings
 
-  <details><ummary>Summary</summary>
+  <details><ummary></summary>
   
   <img src="https://user-images.githubusercontent.com/111847207/232676143-c895a94d-c78e-4c85-8ba1-2cf863813957.png"/>
   
   >Settings of Block Calendar plugin
   
 </details>
+
+## Settings🎨
+
+  <details><ummary></summary>
+
+  ![image](https://user-images.githubusercontent.com/111847207/233534936-f137b47c-7a70-4196-8e59-56e2887f2cc4.png)
+
+  </details>
 
 ## Install from Marketplace
 
