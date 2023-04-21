@@ -256,9 +256,8 @@ const main = () => {
         if (graph) { //デモグラフの場合は返り値がnull
           graphName = graph.name;
 
-          if (!logseq.settings?.currentGraph) { //設定が存在しない場合
-            return;
-          } else if (logseq.settings?.graphLock === false) { //グラフのロックを解除する場合
+
+          if (!logseq.settings?.currentGraph || logseq.settings?.graphLock === false) { //グラフのロックを解除する場合
             logseq.updateSettings({
               screenUuid: "",
               screenPage: "",
