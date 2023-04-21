@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.6.0...v1.6.1) (2023-04-21)
+
+
+### Bug Fixes
+
+* Fix bug in graph toggle operation (settings item) ([f500847](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/f500847d64775e4d96ae4d2f1951e7ad2d6208ec))
+
 # [1.6.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.5.1...v1.6.0) (2023-04-20)
 
 
