@@ -155,6 +155,38 @@ const main = () => {
     //https://logseq.github.io/plugins/types/SettingSchemaDesc.html
     const settingsTemplate: SettingSchemaDesc[] = [
       {
+        key: "",
+        title: "",
+        type: "heading",
+        default: "",
+        description: "",
+      },
+      {
+        key: "",
+        title: "Sticky Text",
+        type: "heading",
+        default: "",
+        description: `
+      Select string and click the same block.
+      Registered in pop-ups and automatically locked. Markdown is not reflected.
+      `,
+      },
+      { //select ジャーナルのみ、ジャーナル以外、全てのページ
+        key: "stickyTextVisible",
+        title: "Sticky Text Visible",
+        type: "enum",
+        enumChoices: ["Journal", "Not-Journal", "All", "None"],
+        default: "All",
+        description: "Showing or not",
+      },
+      {
+        key: "stickyTextZIndex",
+        title: "Sticky Text Z-index",
+        type: "boolean",
+        default: true,
+        description: "Showing over sidebar or not",
+      },
+      {
         key: "graphLock",
         title: "Graph Lock",
         type: "boolean",
@@ -170,28 +202,10 @@ const main = () => {
       },
       {
         key: "",
-        title: "Sticky Text",
+        title: "",
         type: "heading",
         default: "",
-        description: `
-      Select string and click the same block.\n
-      Registered in pop-ups and automatically locked. Markdown is not reflected.
-      `,
-      },
-      { //select ジャーナルのみ、ジャーナル以外、全てのページ
-        key: "stickyTextVisible",
-        title: "Sticky Text Visible",
-        type: "enum",
-        enumChoices: ["Journal", "Not-Journal", "All", "None"],
-        default: "All",
-        description: "Showing Sticky Text or not",
-      },
-      {
-        key: "stickyTextZIndex",
-        title: "Sticky Text Z-index",
-        type: "boolean",
-        default: true,
-        description: "Showing over sidebar or not",
+        description: "",
       },
       {
         key: "",
@@ -199,7 +213,7 @@ const main = () => {
         type: "heading",
         default: "",
         description: `
-      require rendering of Block Calendar Plugin\n
+      require rendering of Block Calendar Plugin
       Set 'custom' and '#StickyCalendar'(Provide CSS selector) on the plugin settings
       `,
       },
@@ -209,7 +223,7 @@ const main = () => {
         type: "enum",
         enumChoices: ["Journal", "Not-Journal", "All", "None"],
         default: "Journal",
-        description: "Showing Sticky Calendar or not",
+        description: "Showing or not",
       },
       {
         key: "stickyCalendarZIndex",
