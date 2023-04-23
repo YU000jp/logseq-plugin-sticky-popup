@@ -77,6 +77,7 @@
 ### Library
 
 - [@logseq/libs](https://logseq.github.io/plugins/)
+- [xyhp915/ moveable plugin UI container](https://github.com/logseq/logseq/pull/3045)
 
 ### Icon
 
