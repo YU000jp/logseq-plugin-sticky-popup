@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.6.1...v1.7.0) (2023-04-25)
+
+
+### Features
+
+* **feed:** remove graph-related settings and link directly to feed ([f826303](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/f82630371c1f9dda52991a35b5b9325ecbc7e647))
+
 ## [1.6.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.6.0...v1.6.1) (2023-04-21)
 
 
