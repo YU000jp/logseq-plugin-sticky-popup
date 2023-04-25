@@ -47,8 +47,8 @@
 
   <details><ummary></summary>
 
-  ![image](https://user-images.githubusercontent.com/111847207/233534936-f137b47c-7a70-4196-8e59-56e2887f2cc4.png)
-
+  ![image](https://user-images.githubusercontent.com/111847207/234302954-3cf2d052-06a1-4a65-8ab2-5cdf2ee211e8.png)
+  
   </details>
 
 ## Install from Marketplace
