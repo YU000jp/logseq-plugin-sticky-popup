@@ -16,21 +16,9 @@ const main = () => {
       //ユーザー設定
       userSettings();
 
-      //Sticky Text グラフのロック
-      if (!logseq.settings?.currentGraph) {//設定が存在しない場合
-        logseq.updateSettings({ currentGraph: graph.name });
-        mainStickyText(graph.name);
-      } else if (logseq.settings?.currentGraph === graph.name) {//作成時のグラフと一致する場合
-        mainStickyText(graph.name);
-      } else if (logseq.settings?.graphLock === false) {//グラフのロックを解除する場合
-        logseq.updateSettings({
-          screenText: "",
-          screenUuid: "",
-          screenPage: "",
-          stickyLock: false,
-        });
-        mainStickyText(graph.name);
-      }
+      //sticky text
+      mainStickyText(graph.name);
+
       //Sticky Calendar
       mainStickyCalendar();
 
@@ -39,13 +27,11 @@ const main = () => {
     }
   });
 
-
   //グラフの変更時
   graphChanged();
 
   //CSS
   mainCSS();
-
 
   //set CSS class
   setCSSclass();
@@ -187,20 +173,6 @@ const main = () => {
         description: "Showing over sidebar or not",
       },
       {
-        key: "graphLock",
-        title: "Graph Lock",
-        type: "boolean",
-        default: true,
-        description: "If Change the graph, [true]: Popup be hidden [false]: Clear selected text and popup be shown",
-      },
-      {
-        key: "currentGraph",
-        title: "Current Graph",
-        type: "string",
-        default: "",
-        description: "Graph name to lock",
-      },
-      {
         key: "",
         title: "",
         type: "heading",
@@ -240,11 +212,6 @@ const main = () => {
 
   // Setting changed
   const onSettingsChangedCallback = (newSet, oldSet) => {
-    if (newSet.graphLock === false) {
-      logseq.updateSettings({
-        stickyLock: false,
-      });
-    }
     if (oldSet.stickyTextVisible && newSet.stickyTextVisible) {
       parent.document.body.classList.remove(`sp-textVisible-${oldSet.stickyTextVisible}`);
       parent.document.body.classList.add(`sp-textVisible-${newSet.stickyTextVisible}`);
@@ -274,30 +241,7 @@ const main = () => {
       logseq.App.getCurrentGraph().then((graph) => {
         if (graph) { //デモグラフの場合は返り値がnull
           graphName = graph.name;
-
-
-          if (!logseq.settings?.currentGraph || logseq.settings?.graphLock === false) { //グラフのロックを解除する場合
-            logseq.updateSettings({
-              screenText: "",
-              currentGraph: graph.name,
-              screenUuid: "",
-              screenPage: "",
-              stickyLock: false,
-            });
-            newStickyText();
-          } else if (logseq.settings?.currentGraph === graph.name) { //作成時のグラフと一致する場合
-            const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
-            if (divSticky) {
-              divSticky.style.display = "unset";
-            }
-            mainStickyText(graph.name);
-          } else {
-            const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
-            if (divSticky) {
-              divSticky.style.display = "none";
-            }
-          }
-
+          mainStickyText(graph.name);
         }
       });
     });
@@ -331,12 +275,11 @@ function mainStickyText(graph: string) {
       });
     }
     let toPage = "";
-    if (pageName) {
-
+    if (pageName && logseq.settings?.currentGraph === graph) {
       toPage = `<button data-on-click="ActionToPage" title="To the page [[${encodeHtml(pageName)}]]" style="overflow:auto">📄${pageName}</button>`;
     }
     let toRightSidebar = "";
-    if (uuid) {
+    if (uuid && logseq.settings?.currentGraph === graph) {
       toRightSidebar = `<button data-on-click="ActionToRightSidebar" title="On right sidebar">👉On right-Sidebar</button><br/>`;
     }
     return {
@@ -370,10 +313,6 @@ function mainStickyText(graph: string) {
   };
   //選択したテキストをdraggableゾーン(Sticky)に表示
   logseq.Editor.onInputSelectionEnd(async (event) => {
-    const divSticky = parent.document.getElementById("logseq-plugin-sticky-popup--sticky") as HTMLDivElement;
-    if (divSticky) {
-      divSticky.style.display = "unset";
-    }
     if (logseq.settings?.stickyLock === true) {
       return;
     } else if (logseq.settings?.ScreenText) {
@@ -567,12 +506,7 @@ const model = {
     }
   },
   async openFromToolbar() {
-    if (logseq.settings?.graphLock === true && logseq.settings?.currentGraph !== graphName) {
-      logseq.UI.showMsg("Sticky Text popup is locked for the graph");
-      logseq.showSettingsUI();
-    } else {
-      mainStickyText(graphName);
-    }
+    mainStickyText(graphName);
     const div = parent.document.getElementById("logseq-plugin-sticky-popup--sticky-calendar") as HTMLDivElement;
     if (!div) {
       await mainStickyCalendar();
