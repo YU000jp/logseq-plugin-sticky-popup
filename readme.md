@@ -10,7 +10,7 @@
 
 > Pop-ups possible to be moved around and resized.
 
-![someautomaticmarkdownlink (7)](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
+![demo image](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
 
 ## Features
 
@@ -51,24 +51,26 @@
   
   </details>
 
-## Install from Marketplace
+## Install from Logseq Marketplace
 
-- Press [---] on the top right toolbar to open [Plugins]
+- Press [`---`] on the top right toolbar to open [`Plugins`]
 - Select marketplace
-- Type 'popup' in the search field, select it from the search results and install
+- Type '`popup`' in the search field, select it from the search results and install
 
 ![image](https://user-images.githubusercontent.com/111847207/232879519-8376669d-3f20-4b28-b0cc-6993c25140b7.png)
 
 ## Question
 
-- To reopen popups, press on 📌button in the toolbar
+- To reopen popups, press on `📌`button in the toolbar
 
-## Other Logseq plugins (My products)
+## My plugins
 
+- [Weekdays and Holidays (Templates)](https://github.com/YU000jp/logseq-plugin-weekdays-and-weekends)
+- [Sticky Popup](https://github.com/YU000jp/logseq-plugin-sticky-popup)
 - [SomeMenuExtender](https://github.com/YU000jp/logseq-plugin-some-menu-extender)
-- [Column Layout](https://github.com/YU000jp/Logseq-column-Layout)
-- [Panel Coloring](https://github.com/YU000jp/logseq-plugin-panel-coloring)
-- [Page-tags and Hierarchy](https://github.com/YU000jp/logseq-page-tags-and-hierarchy)
+- [Column Layout (UI)](https://github.com/YU000jp/Logseq-column-Layout)
+- [Panel Coloring (Color)](https://github.com/YU000jp/logseq-plugin-panel-coloring)
+- [Page-tags and Hierarchy (UI)](https://github.com/YU000jp/logseq-page-tags-and-hierarchy)
 - [Rakuten-books](https://github.com/YU000jp/logseq-plugin-rakuten-books) (Only for Japanese site)
 - [booklog-jp-import](https://github.com/YU000jp/logseq-plugin-booklog-jp-import) (Only for Japanese site)
 
