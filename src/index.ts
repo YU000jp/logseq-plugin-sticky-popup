@@ -57,28 +57,71 @@ const main = () => {
     onSettingsChangedCallback(newSettings, oldSettings);
   });
 
+};
 
-  //set CSS class
-  function setCSSclass() {
-    if (logseq.settings?.stickyTextVisible) {
-      parent.document.body.classList.add(`sp-textVisible-${logseq.settings.stickyTextVisible}`);
-    }
-    if (logseq.settings?.stickyCalendarVisible) {
-      parent.document.body.classList.add(`sp-calendarVisible-${logseq.settings.stickyCalendarVisible}`);
-    }
-    if (!logseq.settings?.stickyCalendarZIndex || logseq.settings?.stickyCalendarZIndex === true) {
-      parent.document.body.classList.add("sp-calendarZIndex");
-    }
-    if (!logseq.settings?.stickyTextZIndex || logseq.settings?.stickyTextZIndex === true) {
-      parent.document.body.classList.add("sp-textZIndex");
-    }
+//end main
+
+
+//graph changed
+function graphChanged() {
+  logseq.App.onCurrentGraphChanged(() => {
+    logseq.App.getCurrentGraph().then((graph) => {
+      if (graph) { //デモグラフの場合は返り値がnull
+        graphName = graph.name;
+        mainStickyText(graph.name);
+      }
+    });
+  });
+}
+//end graph changed
+
+
+// Setting changed
+const onSettingsChangedCallback = (newSet, oldSet) => {
+  if (oldSet.stickyTextVisible && newSet.stickyTextVisible) {
+    parent.document.body.classList.remove(`sp-textVisible-${oldSet.stickyTextVisible}`);
+    parent.document.body.classList.add(`sp-textVisible-${newSet.stickyTextVisible}`);
   }
-  //end set CSS class
+  if (oldSet.stickyCalendarVisible && newSet.stickyCalendarVisible) {
+    parent.document.body.classList.remove(`sp-calendarVisible-${oldSet.stickyCalendarVisible}`);
+    parent.document.body.classList.add(`sp-calendarVisible-${newSet.stickyCalendarVisible}`);
+  }
+
+  if (oldSet.stickyTextZIndex === false && newSet.stickyTextZIndex === true) {
+    parent.document.body.classList.add("sp-textZIndex");
+  } else if (oldSet.stickyTextZIndex === true && newSet.stickyTextZIndex === false) {
+    parent.document.body.classList.remove("sp-textZIndex");
+  }
+  if (oldSet.stickyCalendarZIndex === false && newSet.stickyCalendarZIndex === true) {
+    parent.document.body.classList.add("sp-calendarZIndex");
+  } else if (oldSet.stickyCalendarZIndex === true && newSet.stickyCalendarZIndex === false) {
+    parent.document.body.classList.remove("sp-calendarZIndex");
+  }
+}
+//end Setting changed
 
 
-  //main CSS
-  function mainCSS() {
-    logseq.provideStyle(String.raw`
+//set CSS class
+function setCSSclass() {
+  if (logseq.settings?.stickyTextVisible) {
+    parent.document.body.classList.add(`sp-textVisible-${logseq.settings.stickyTextVisible}`);
+  }
+  if (logseq.settings?.stickyCalendarVisible) {
+    parent.document.body.classList.add(`sp-calendarVisible-${logseq.settings.stickyCalendarVisible}`);
+  }
+  if (!logseq.settings?.stickyCalendarZIndex || logseq.settings?.stickyCalendarZIndex === true) {
+    parent.document.body.classList.add("sp-calendarZIndex");
+  }
+  if (!logseq.settings?.stickyTextZIndex || logseq.settings?.stickyTextZIndex === true) {
+    parent.document.body.classList.add("sp-textZIndex");
+  }
+}
+//end set CSS class
+
+
+//main CSS
+function mainCSS() {
+  logseq.provideStyle(String.raw`
   body.is-pdf-active div#logseq-plugin-sticky-popup--sticky,
   body.is-pdf-active div#logseq-plugin-sticky-popup--sticky-calendar,
   body:not([data-page="home"]).sp-textVisible-Journal div#logseq-plugin-sticky-popup--sticky,
@@ -132,126 +175,82 @@ const main = () => {
     background:var(--ls-primary-background-color);
   }
   `);
-  }
-  //end main CSS
+}
+//end main CSS
 
 
-  //user setting
-  function userSettings() {
-    //https://logseq.github.io/plugins/types/SettingSchemaDesc.html
-    const settingsTemplate: SettingSchemaDesc[] = [
-      {
-        key: "",
-        title: "",
-        type: "heading",
-        default: "",
-        description: "",
-      },
-      {
-        key: "",
-        title: "Sticky Text",
-        type: "heading",
-        default: "",
-        description: `
+//user setting
+function userSettings() {
+  //https://logseq.github.io/plugins/types/SettingSchemaDesc.html
+  const settingsTemplate: SettingSchemaDesc[] = [
+    {
+      key: "",
+      title: "",
+      type: "heading",
+      default: "",
+      description: "",
+    },
+    {
+      key: "",
+      title: "Sticky Text",
+      type: "heading",
+      default: "",
+      description: `
       Select string and click the same block.
       Registered in pop-ups and automatically locked. Markdown is not reflected.
       `,
-      },
-      { //select ジャーナルのみ、ジャーナル以外、全てのページ
-        key: "stickyTextVisible",
-        title: "Sticky Text Visible",
-        type: "enum",
-        enumChoices: ["Journal", "Not-Journal", "All", "None"],
-        default: "All",
-        description: "Showing or not",
-      },
-      {
-        key: "stickyTextZIndex",
-        title: "Sticky Text Z-index",
-        type: "boolean",
-        default: true,
-        description: "Showing over sidebar or not",
-      },
-      {
-        key: "",
-        title: "",
-        type: "heading",
-        default: "",
-        description: "",
-      },
-      {
-        key: "",
-        title: "Sticky Calendar",
-        type: "heading",
-        default: "",
-        description: `
+    },
+    { //select ジャーナルのみ、ジャーナル以外、全てのページ
+      key: "stickyTextVisible",
+      title: "Sticky Text Visible",
+      type: "enum",
+      enumChoices: ["Journal", "Not-Journal", "All", "None"],
+      default: "All",
+      description: "Showing or not",
+    },
+    {
+      key: "stickyTextZIndex",
+      title: "Sticky Text Z-index",
+      type: "boolean",
+      default: true,
+      description: "Showing over sidebar or not",
+    },
+    {
+      key: "",
+      title: "",
+      type: "heading",
+      default: "",
+      description: "",
+    },
+    {
+      key: "",
+      title: "Sticky Calendar",
+      type: "heading",
+      default: "",
+      description: `
       require rendering of Block Calendar Plugin
       Set 'custom' and '#StickyCalendar'(Provide CSS selector) on the plugin settings
       `,
-      },
-      {
-        key: "stickyCalendarVisible",
-        title: "Sticky Calendar Visible",
-        type: "enum",
-        enumChoices: ["Journal", "Not-Journal", "All", "None"],
-        default: "Journal",
-        description: "Showing or not",
-      },
-      {
-        key: "stickyCalendarZIndex",
-        title: "Sticky Calendar Z-index",
-        type: "boolean",
-        default: true,
-        description: "Showing over sidebar or not",
-      },
-    ];
-    logseq.useSettingsSchema(settingsTemplate);
-  }
-  //end user setting
-
-
-  // Setting changed
-  const onSettingsChangedCallback = (newSet, oldSet) => {
-    if (oldSet.stickyTextVisible && newSet.stickyTextVisible) {
-      parent.document.body.classList.remove(`sp-textVisible-${oldSet.stickyTextVisible}`);
-      parent.document.body.classList.add(`sp-textVisible-${newSet.stickyTextVisible}`);
-    }
-    if (oldSet.stickyCalendarVisible && newSet.stickyCalendarVisible) {
-      parent.document.body.classList.remove(`sp-calendarVisible-${oldSet.stickyCalendarVisible}`);
-      parent.document.body.classList.add(`sp-calendarVisible-${newSet.stickyCalendarVisible}`);
-    }
-
-    if (oldSet.stickyTextZIndex === false && newSet.stickyTextZIndex === true) {
-      parent.document.body.classList.add("sp-textZIndex");
-    } else if (oldSet.stickyTextZIndex === true && newSet.stickyTextZIndex === false) {
-      parent.document.body.classList.remove("sp-textZIndex");
-    }
-    if (oldSet.stickyCalendarZIndex === false && newSet.stickyCalendarZIndex === true) {
-      parent.document.body.classList.add("sp-calendarZIndex");
-    } else if (oldSet.stickyCalendarZIndex === true && newSet.stickyCalendarZIndex === false) {
-      parent.document.body.classList.remove("sp-calendarZIndex");
-    }
-  }
-  //end Setting changed
-
-
-  //graph changed
-  function graphChanged() {
-    logseq.App.onCurrentGraphChanged(() => {
-      logseq.App.getCurrentGraph().then((graph) => {
-        if (graph) { //デモグラフの場合は返り値がnull
-          graphName = graph.name;
-          mainStickyText(graph.name);
-        }
-      });
-    });
-  }
-  //end graph changed
-
-};
-
-//end main
-
+    },
+    {
+      key: "stickyCalendarVisible",
+      title: "Sticky Calendar Visible",
+      type: "enum",
+      enumChoices: ["Journal", "Not-Journal", "All", "None"],
+      default: "Journal",
+      description: "Showing or not",
+    },
+    {
+      key: "stickyCalendarZIndex",
+      title: "Sticky Calendar Z-index",
+      type: "boolean",
+      default: true,
+      description: "Showing over sidebar or not",
+    },
+  ];
+  logseq.useSettingsSchema(settingsTemplate);
+}
+//end user setting
 
 
 //Sticky Text
