@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.7.0...v1.7.1) (2023-05-02)
+
+
+### Bug Fixes
+
+* **bug:** call once onInputSelectionEnd ([f998e73](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/f998e733b6a291678db0460dea6ba188f02e7509))
+
 # [1.7.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.6.1...v1.7.0) (2023-04-25)
 
 
