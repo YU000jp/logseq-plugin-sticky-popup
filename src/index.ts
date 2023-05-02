@@ -17,7 +17,7 @@ const main = () => {
       userSettings();
 
       //sticky text
-      mainStickyText();
+      mainStickyText(graph.name);
 
       //Sticky Calendar
       mainStickyCalendar();
@@ -57,27 +57,6 @@ const main = () => {
     onSettingsChangedCallback(newSettings, oldSettings);
   });
 
-
-  //選択したテキストをdraggableゾーン(Sticky)に表示
-  logseq.Editor.onInputSelectionEnd(async (event) => {
-    if (logseq.settings?.stickyLock === true) {
-      return;
-    } else if (logseq.settings?.ScreenText) {
-      logseq.provideUI(dsl({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage));
-    } else {
-      const current = await logseq.Editor.getCurrentBlock() as BlockEntity;
-      const currentPage = await logseq.Editor.getCurrentPage() as PageEntity;
-      if (current) {
-        const PageName = currentPage?.name || "";
-        const x = logseq.settings?.screenX || 5;
-        const y = logseq.settings?.screenY || 695;
-        const width = logseq.settings?.screenWidth || "195px";
-        const height = logseq.settings?.screenHeight || "225px";
-        await logseq.provideUI(dsl({}, event.text, x, y, width, height, current.uuid, PageName));
-      }
-    }
-  });
-
 };
 
 //end main
@@ -89,7 +68,7 @@ function graphChanged() {
     logseq.App.getCurrentGraph().then((graph) => {
       if (graph) { //デモグラフの場合は返り値がnull
         graphName = graph.name;
-        mainStickyText();
+        mainStickyText(graph.name);
       }
     });
   });
@@ -154,7 +133,7 @@ function mainCSS() {
     display: none;
   }
 
-  /* TODO: awesome UIプラグインで、Navigation menuが隠れる件(Sticky Textが上になる) */
+  /* TODO: Navigation menuが隠れる件(Sticky Textが上になる) */
 
   body:not(.sp-textZIndex) div#logseq-plugin-sticky-popup--sticky,
   body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar {
@@ -249,7 +228,7 @@ function userSettings() {
       type: "heading",
       default: "",
       description: `
-      Require rendering of Block Calendar Plugin
+      require rendering of Block Calendar Plugin
       Set 'custom' and '#StickyCalendar'(Provide CSS selector) on the plugin settings
       `,
     },
@@ -274,80 +253,103 @@ function userSettings() {
 //end user setting
 
 
-const dsl = (flag, text, x, y, width, height, uuid, pageName) => {
-  if (flag.lock === true) {
-    //
-  } else if (logseq.settings?.stickyLock === true) {
-    const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement;
-    if (stickyUnlock) {
-      stickyUnlock.style.display = "unset";
-    }
-  } else {
-    stickyPosition("logseq-plugin-sticky-popup--sticky");
-    logseq.updateSettings({
-      currentGraph: graphName,
-      screenText: text,
-      screenUuid: uuid,
-      screenPage: pageName,
-      stickyLock: true,
-    });
-  }
-  let toPage = "";
-  if (pageName && logseq.settings?.currentGraph === graphName) {
-    toPage = `<button data-on-click="ActionToPage" title="To the page [[${encodeHtml(pageName)}]]" style="overflow:auto">📄${pageName}</button>`;
-  }
-  let toRightSidebar = "";
-  if (uuid && logseq.settings?.currentGraph === graphName) {
-    toRightSidebar = `<button data-on-click="ActionToRightSidebar" title="On right sidebar">👉On right-Sidebar</button><br/>`;
-  }
-  return {
-    key: 'sticky',
-    reset: true,
-    template: `
-      <div style="padding:10px;overflow:auto">
-          <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" title="${encodeHtml(text)}">${text}</a></p>
-        <div id="sticky-actions-left">
-          ${toRightSidebar}${toPage}
-        </div>
-        <div id="sticky-actions-right">
-          <button data-on-click="ActionUnlock" id="stickyUnlock"><span style="text-decoration:underline;font-size:1.2em" title="Unlock: Overwrites the next selected text">🔓Unlock</span></button><br/>
-          <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
-        </div>
-      </div>
-    `,
-    style: {
-      left: x + 'px',
-      top: y + 'px',
-      width: width,
-      height: height,
-      backgroundColor: 'var(--ls-primary-background-color)',
-      color: 'var(--ls-primary-text-color)',
-      boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
-    },
-    attrs: {
-      title: 'Sticky Text',
-    },
-  };
-};
-
-
 //Sticky Text
-function mainStickyText() {
-    //読み込み時
-    if (logseq.settings?.screenText) {
-      logseq.provideUI(dsl({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage));
-    } else {//値がない場合(初回)
-      newStickyText();
-    }
-}//end
+function mainStickyText(graph: string) {
+  const dsl = (flag, text, x, y, width, height, uuid, pageName) => {
+    if (flag.lock === true) {
 
+    } else if (logseq.settings?.stickyLock === true) {
+      const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement;
+      if (stickyUnlock) {
+        stickyUnlock.style.display = "unset";
+      }
+    } else {
+      stickyPosition("logseq-plugin-sticky-popup--sticky");
+      logseq.updateSettings({
+        currentGraph: graph,
+        screenText: text,
+        screenUuid: uuid,
+        screenPage: pageName,
+        stickyLock: true,
+      });
+    }
+    let toPage = "";
+    if (pageName && logseq.settings?.currentGraph === graph) {
+      toPage = `<button data-on-click="ActionToPage" title="To the page [[${encodeHtml(pageName)}]]" style="overflow:auto">📄${pageName}</button>`;
+    }
+    let toRightSidebar = "";
+    if (uuid && logseq.settings?.currentGraph === graph) {
+      toRightSidebar = `<button data-on-click="ActionToRightSidebar" title="On right sidebar">👉On right-Sidebar</button><br/>`;
+    }
+    return {
+      key: 'sticky',
+      reset: true,
+      template: `
+        <div style="padding:10px;overflow:auto">
+            <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" title="${encodeHtml(text)}">${text}</a></p>
+          <div id="sticky-actions-left">
+            ${toRightSidebar}${toPage}
+          </div>
+          <div id="sticky-actions-right">
+            <button data-on-click="ActionUnlock" id="stickyUnlock"><span style="text-decoration:underline;font-size:1.2em" title="Unlock: Overwrites the next selected text">🔓Unlock</span></button><br/>
+            <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
+          </div>
+        </div>
+      `,
+      style: {
+        left: x + 'px',
+        top: y + 'px',
+        width: width,
+        height: height,
+        backgroundColor: 'var(--ls-primary-background-color)',
+        color: 'var(--ls-primary-text-color)',
+        boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
+      },
+      attrs: {
+        title: 'Sticky Text',
+      },
+    };
+  };
+  //選択したテキストをdraggableゾーン(Sticky)に表示
+  logseq.Editor.onInputSelectionEnd(async (event) => {
+    if (logseq.settings?.stickyLock === true) {
+      return;
+    } else if (logseq.settings?.ScreenText) {
+      logseq.provideUI(dsl({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage));
+    } else {
+      const current = await logseq.Editor.getCurrentBlock() as BlockEntity;
+      const currentPage = await logseq.Editor.getCurrentPage() as PageEntity;
+      if (current) {
+        const PageName = currentPage?.name || "";
+        const x = logseq.settings?.screenX || 5;//event.point.x + 100
+        const y = logseq.settings?.screenY || 695;//event.point.y + 100
+        const width = logseq.settings?.screenWidth || "195px";
+        const height = logseq.settings?.screenHeight || "225px";
+        await logseq.provideUI(dsl({}, event.text, x, y, width, height, current.uuid, PageName));
+      }
+    }
+  });
+
+  //読み込み時
+  if (logseq.settings?.screenText) {
+    logseq.provideUI(dsl({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage));
+  } else {//値がない場合(初回)
+    newStickyText();
+  }
+
+}
 
 //初回
 function newStickyText() {
-  logseq.provideUI({
-    key: 'sticky',
-    reset: true,
-    template: `
+  const dsl = () => {
+    const x = (logseq.settings?.screenX || 5) + 'px';
+    const y = (logseq.settings?.screenY || 695) + 'px';
+    const width = logseq.settings?.screenWidth || "195px";
+    const height = logseq.settings?.screenHeight || "225px";
+    return {
+      key: 'sticky',
+      reset: true,
+      template: `
           <div style="padding:10px;overflow:auto">
               <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default" title="Select any text">📝Select any text</a></p>
             <div id="sticky-actions-right">
@@ -355,19 +357,21 @@ function newStickyText() {
             </div>
           </div>
         `,
-    style: {
-      left: (logseq.settings?.screenX || 5) + 'px',
-      top: (logseq.settings?.screenY || 695) + 'px',
-      width: logseq.settings?.screenWidth || "195px",
-      height: logseq.settings?.screenHeight || "225px",
-      backgroundColor: 'var(--ls-primary-background-color)',
-      color: 'var(--ls-primary-text-color)',
-      boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
-    },
-    attrs: {
-      title: 'Sticky Text',
-    },
-  });
+      style: {
+        left: x,
+        top: y,
+        width: width,
+        height: height,
+        backgroundColor: 'var(--ls-primary-background-color)',
+        color: 'var(--ls-primary-text-color)',
+        boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
+      },
+      attrs: {
+        title: 'Sticky Text',
+      },
+    };
+  };
+  logseq.provideUI(dsl());
 }
 
 //end Sticky Text
@@ -375,28 +379,35 @@ function newStickyText() {
 
 //Sticky Calendar
 function mainStickyCalendar() {
-  logseq.provideUI({
-    key: `sticky-calendar`,
-    reset: true,
-    template: `
+  const dsl = () => {
+    const x = logseq.settings?.calendarScreenX || 700;
+    const y = logseq.settings?.calendarScreenY || 700;
+    const width = logseq.settings?.calendarScreenWidth || "320px";
+    const height = logseq.settings?.calendarScreenHeight || "300px";
+    return {
+      key: `sticky-calendar`,
+      reset: true,
+      template: `
     <div id="StickyCalendar" style="overflow:hidden"></div>
     <div style="position:absolute;bottom:0;right:0.15em;font-size:small">
       <button data-on-click="stickyCalendarReset" title="Reload: For re-rendering">🎮Reload</button> <button data-on-click="stickyCalendarPinned" title="Pin: saves the position of this popup">📌Pin</button>
     </div>
   `,
-    style: {
-      left: (logseq.settings?.calendarScreenX || 700) + 'px',
-      top: (logseq.settings?.calendarScreenY || 700) + 'px',
-      width: logseq.settings?.calendarScreenWidth || "320px",
-      height: logseq.settings?.calendarScreenHeight || "300px",
-      backgroundColor: 'var(--ls-primary-background-color)',
-      color: 'var(--ls-primary-text-color)',
-      boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
-    },
-    attrs: {
-      title: 'Sticky Calendar',
-    },
-  });
+      style: {
+        left: x + 'px',
+        top: y + 'px',
+        width: width,
+        height: height,
+        backgroundColor: 'var(--ls-primary-background-color)',
+        color: 'var(--ls-primary-text-color)',
+        boxShadow: '1px 2px 5px var(--ls-secondary-background-color)',
+      },
+      attrs: {
+        title: 'Sticky Calendar',
+      },
+    }
+  }
+  logseq.provideUI(dsl());
 }
 
 
@@ -494,7 +505,7 @@ const model = {
     }
   },
   async openFromToolbar() {
-    mainStickyText();
+    mainStickyText(graphName);
     const div = parent.document.getElementById("logseq-plugin-sticky-popup--sticky-calendar") as HTMLDivElement;
     if (!div) {
       await mainStickyCalendar();
