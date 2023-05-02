@@ -202,18 +202,18 @@ function userSettings() {
     },
     { //select ジャーナルのみ、ジャーナル以外、全てのページ
       key: "stickyTextVisible",
-      title: "Sticky Text Visible",
+      title: "Visible or not",
       type: "enum",
       enumChoices: ["Journal", "Not-Journal", "All", "None"],
       default: "All",
-      description: "Showing or not",
+      description: "",
     },
     {
       key: "stickyTextZIndex",
-      title: "Sticky Text Z-index",
+      title: "Showing over sidebar or not",
       type: "boolean",
       default: true,
-      description: "Showing over sidebar or not",
+      description: "",
     },
     {
       key: "",
@@ -234,18 +234,18 @@ function userSettings() {
     },
     {
       key: "stickyCalendarVisible",
-      title: "Sticky Calendar Visible",
+      title: "Visible or not",
       type: "enum",
       enumChoices: ["Journal", "Not-Journal", "All", "None"],
       default: "Journal",
-      description: "Showing or not",
+      description: "",
     },
     {
       key: "stickyCalendarZIndex",
-      title: "Sticky Calendar Z-index",
+      title: "Showing over sidebar or not",
       type: "boolean",
       default: true,
-      description: "Showing over sidebar or not",
+      description: "",
     },
   ];
   logseq.useSettingsSchema(settingsTemplate);
