@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.7.1...v1.8.0) (2023-05-05)
+
+
+### Features
+
+* **Sticky Weekly:** demo version (for progress only) ([1d58711](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/1d58711187761605e0cb282d725c839dd8acf7fe))
+
 ## [1.7.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.7.0...v1.7.1) (2023-05-02)
 
 
