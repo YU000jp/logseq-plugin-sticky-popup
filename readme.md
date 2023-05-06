@@ -63,6 +63,10 @@
 
 - To reopen popups, press on `📌`button in the toolbar
 
+## Showcase / Questions / Ideas / Help
+
+Go to the [discussion](https://github.com/YU000jp/logseq-plugin-sticky-popup/discussions) tab to ask and find this kind of things.
+
 ## Contributing
 
 - Contributions to this plugin are always welcome! If you find a bug or have a suggestion for a new feature, please open an issue or submit a pull request. All contributions will be reviewed and considered for inclusion in future releases.
@@ -71,21 +75,26 @@
 
 - This Plugin is released under the MIT License. See the LICENSE file for more information.
 
-# Author
+## Author
 
-* YU000jp
+* GitHub: [YU000jp](https://github.com/YU000jp)
 * Twitter: [@y0skyblue](https://twitter.com/y0skyblue)
+* Discord: YU#5179 ([Logseq](https://discord.gg/logseq))
 
-### My plugins
+### My Logseq plugins
 
 - [Weekdays and Holidays (Templates)](https://github.com/YU000jp/logseq-plugin-weekdays-and-weekends)
 - [Sticky Popup](https://github.com/YU000jp/logseq-plugin-sticky-popup)
 - [SomeMenuExtender](https://github.com/YU000jp/logseq-plugin-some-menu-extender)
-- [Column Layout](https://github.com/YU000jp/Logseq-column-Layout)
 - [Panel Coloring](https://github.com/YU000jp/logseq-plugin-panel-coloring)
 - [Page-tags and Hierarchy](https://github.com/YU000jp/logseq-page-tags-and-hierarchy)
+- [Column Layout](https://github.com/YU000jp/Logseq-column-Layout)
 - [Rakuten-books](https://github.com/YU000jp/logseq-plugin-rakuten-books) (Only for Japanese site)
 - [booklog-jp-import](https://github.com/YU000jp/logseq-plugin-booklog-jp-import) (Only for Japanese site)
+
+## Link
+
+- [Logseq](https://github.com/logseq)
 
 ## Prior art & Credit
 
