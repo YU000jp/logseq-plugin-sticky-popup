@@ -43,14 +43,6 @@
   
 </details>
 
-## Settings🎨
-
-  <details><ummary></summary>
-
-  ![image](https://user-images.githubusercontent.com/111847207/234302954-3cf2d052-06a1-4a65-8ab2-5cdf2ee211e8.png)
-  
-  </details>
-
 ## Install from Logseq Marketplace
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
