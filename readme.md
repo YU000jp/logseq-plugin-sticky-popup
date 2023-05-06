@@ -4,7 +4,7 @@
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) created 2023/04/18
+[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) Published 2023/04/18
 
 ## Demo
 
