@@ -640,7 +640,7 @@ async function createWeeklyTable(uuid: any) {
 
   // 週の開始曜日を設定（0 = 日曜日 US、1 = 月曜日 JP、2 = 火曜日、...、6 = 土曜日)
   const startOfWeek: number = Number(preferredStartOfWeek); //string型からnumber型に変換
-  const today = await moment(); // 今日の日付を取得
+  const today = await moment(new Date()); // 今日の日付を取得
   // 週の始まりの日付を求める
   const startOfCurrentWeek = today.clone().startOf('week').add(startOfWeek, 'days');
   const startOfPreviousWeek = startOfCurrentWeek.clone().subtract(1, 'week');
