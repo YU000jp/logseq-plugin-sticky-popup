@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.0...v1.8.1) (2023-05-12)
+
+
+### Bug Fixes
+
+* **bug:** sticky weekly weekday ([c0c5816](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/c0c5816691690bd7d3d832b0a4debc52ef80d6d5))
+* **bug:** sticky weekly weekday ([7915890](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/79158900c1943fe2d746c5d5116076246967444a))
+
 # [1.8.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.7.1...v1.8.0) (2023-05-05)
 
 
