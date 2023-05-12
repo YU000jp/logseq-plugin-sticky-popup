@@ -586,20 +586,20 @@ async function mainStickyWeekly() {
 
     // 週の開始曜日を設定（0 = 日曜日 US、1 = 月曜日 JP、2 = 火曜日、...、6 = 土曜日)
     const startOfWeek: number = Number(preferredStartOfWeek); //string型からnumber型に変換
-    const today = await moment();
+    const today = await moment(new Date());
     weekday = today.format("dddd");
     // if (logseq.settings?.weeklyISO === true) { TODO:
     //   //ISO 8601週番号適用
     //   year = today.format("GGGG");
     //   numberOfWeek = Number(today.format("WW"));
     // } else {
-      moment.updateLocale('en', {
-        week: {
-          dow: startOfWeek,
-        },
-      });
-      year = today.format("gggg"); // 年を取得
-      numberOfWeek = today.format("ww"); // 週を取得
+    moment.updateLocale('en', {
+      week: {
+        dow: startOfWeek,
+      },
+    });
+    year = today.format("gggg"); // 年を取得
+    numberOfWeek = today.format("ww"); // 週を取得
     // }
     return {
       year,
