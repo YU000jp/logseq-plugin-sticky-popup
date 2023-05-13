@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.1...v1.8.2) (2023-05-13)
+
+
+### Bug Fixes
+
+* **bug:** Popup CSS z-index ([5cc2387](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/5cc238797b8253d72ddcc396b1db696f42257857))
+
 ## [1.8.1](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.0...v1.8.1) (2023-05-12)
 
 
