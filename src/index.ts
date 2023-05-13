@@ -247,12 +247,7 @@ function mainCSS() {
   body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar,
   body:not(.sp-weeklyZIndex) div#logseq-plugin-sticky-popup--sticky-weekly {
     z-index: 1!important;
-  }
-  body.sp-textZIndex div#logseq-plugin-sticky-popup--sticky,
-  body.sp-calendarZIndex div#logseq-plugin-sticky-popup--sticky-calendar,
-  body.sp-weeklyZIndex div#logseq-plugin-sticky-popup--sticky-weekly {
-    z-index: var(--ls-z-index-level-1)!important;
-  }
+  }import { create } from './../../logseq-plugin-booklog-jp-import/src/create';
 
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
     z-index: var(--ls-z-index-level-5);
