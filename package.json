@@ -20,9 +20,7 @@
         "prod": "npm run clean && vite build"
     },
     "dependencies": {
-        "@logseq/libs": "^0.0.14",
-        "logseq-dateutils": "^0.0.26",
-        "moment": "^2.29.4"
+        "@logseq/libs": "^0.0.14"
     },
     "devDependencies": {
         "@semantic-release/changelog": "^6.0.3",

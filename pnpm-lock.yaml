@@ -4,12 +4,6 @@ dependencies:
   '@logseq/libs':
     specifier: ^0.0.14
     version: 0.0.14
-  logseq-dateutils:
-    specifier: ^0.0.26
-    version: 0.0.26
-  moment:
-    specifier: ^2.29.4
-    version: 2.29.4
 
 devDependencies:
   '@semantic-release/changelog':
@@ -3464,10 +3458,6 @@ packages:
       is-unicode-supported: 0.1.0
     dev: true
 
-  /logseq-dateutils@0.0.26:
-    resolution: {integrity: sha512-HUipF4ZqIq5ecrR53Rp7sstMgEQc3lkrVZ8u0uZXm5MMBTeipzFSLwifD+VE1c0Kl6G2B4JFMux360qj1JI6rg==}
-    dev: false
-
   /longest@2.0.1:
     resolution: {integrity: sha512-Ajzxb8CM6WAnFjgiloPsI3bF+WCxcvhdIG3KNA2KN962+tdBsHcuQ4k4qX/EcS/2CRkcc0iAkR956Nib6aXU/Q==}
     engines: {node: '>=0.10.0'}
@@ -3638,10 +3628,6 @@ packages:
     resolution: {integrity: sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==}
     engines: {node: '>=0.10.0'}
     dev: true
-
-  /moment@2.29.4:
-    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
-    dev: false
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
