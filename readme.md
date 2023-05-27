@@ -48,8 +48,8 @@
 ### Install from Logseq Marketplace
 
 - Press [`---`] on the top right toolbar to open [`Plugins`]
-- Select marketplace
-- Type '`popup`' in the search field, select it from the search results and install
+- Select `Marketplace`
+- Type `popup` in the search field, select it from the search results and install
 
 ![image](https://user-images.githubusercontent.com/111847207/232879519-8376669d-3f20-4b28-b0cc-6993c25140b7.png)
 
