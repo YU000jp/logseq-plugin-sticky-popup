@@ -1,7 +1,5 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
-import { AppUserConfigs, BlockEntity, IBatchBlock, PageEntity, SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
-import { getDateForPage } from 'logseq-dateutils'; //https://github.com/hkgnp/logseq-dateutils
-import moment from 'moment';
+import { BlockEntity, PageEntity, SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
 
 let graphName = "";//For command pallet
 
@@ -20,9 +18,6 @@ const main = () => {
 
       //Sticky Calendar
       mainStickyCalendar();
-
-      //sticky Weekly
-      mainStickyWeekly();
     }
   });
 
@@ -95,10 +90,6 @@ const main = () => {
       stickyPosition("logseq-plugin-sticky-popup--sticky-calendar");
       logseq.UI.showMsg("pinned", "success");
     },
-    stickyWeeklyPinned() {
-      stickyPosition("logseq-plugin-sticky-popup--sticky-weekly");
-      logseq.UI.showMsg("pinned", "success");
-    },
     stickyCalendarReset() {
       setTimeout(() => {
         logseq.App.setRightSidebarVisible("toggle");
@@ -147,16 +138,6 @@ const main = () => {
           logseq.App.setRightSidebarVisible("toggle");
         }, 30);
       }
-      mainStickyWeekly();
-    },
-    async openWeekPage(e) {
-      const { week } = e.dataset;
-      // const page = await logseq.Editor.getPage(week);
-      // if (page) {
-      //   await logseq.App.pushState("page", { name: week });
-      // } else {
-      await createWeekPage(week);
-      //}
     },
   });
   //end model
@@ -176,10 +157,6 @@ const onSettingsChangedCallback = (newSet, oldSet) => {
     parent.document.body.classList.remove(`sp-calendarVisible-${oldSet.stickyCalendarVisible}`);
     parent.document.body.classList.add(`sp-calendarVisible-${newSet.stickyCalendarVisible}`);
   }
-  if (oldSet.stickyWeeklyVisible && newSet.stickyWeeklyVisible) {
-    parent.document.body.classList.remove(`sp-WeeklyVisible-${oldSet.stickyWeeklyVisible}`);
-    parent.document.body.classList.add(`sp-weeklyVisible-${newSet.stickyWeeklyVisible}`);
-  }
   if (oldSet.stickyTextZIndex === false && newSet.stickyTextZIndex === true) {
     parent.document.body.classList.add("sp-textZIndex");
   } else if (oldSet.stickyTextZIndex === true && newSet.stickyTextZIndex === false) {
@@ -189,11 +166,6 @@ const onSettingsChangedCallback = (newSet, oldSet) => {
     parent.document.body.classList.add("sp-calendarZIndex");
   } else if (oldSet.stickyCalendarZIndex === true && newSet.stickyCalendarZIndex === false) {
     parent.document.body.classList.remove("sp-calendarZIndex");
-  }
-  if (oldSet.stickyWeeklyZIndex === false && newSet.stickyWeeklyZIndex === true) {
-    parent.document.body.classList.add("sp-weeklyZIndex");
-  } else if (oldSet.stickyWeeklyZIndex === true && newSet.stickyWeeklyZIndex === false) {
-    parent.document.body.classList.remove("sp-weeklyZIndex");
   }
 }
 //end Setting changed
@@ -207,17 +179,11 @@ function setCSSclass() {
   if (logseq.settings?.stickyCalendarVisible) {
     parent.document.body.classList.add(`sp-calendarVisible-${logseq.settings.stickyCalendarVisible}`);
   }
-  if (logseq.settings?.stickyWeeklyVisible) {
-    parent.document.body.classList.add(`sp-weeklyVisible-${logseq.settings.stickyWeeklyVisible}`);
-  }
   if (!logseq.settings?.stickyTextZIndex || logseq.settings?.stickyTextZIndex === true) {
     parent.document.body.classList.add("sp-textZIndex");
   }
   if (!logseq.settings?.stickyCalendarZIndex || logseq.settings?.stickyCalendarZIndex === true) {
     parent.document.body.classList.add("sp-calendarZIndex");
-  }
-  if (!logseq.settings?.stickyWeeklyZIndex || logseq.settings?.stickyWeeklyZIndex === true) {
-    parent.document.body.classList.add("sp-weeklyZIndex");
   }
 }
 //end set CSS class
@@ -228,29 +194,23 @@ function mainCSS() {
   logseq.provideStyle(String.raw`
   body.is-pdf-active div#logseq-plugin-sticky-popup--sticky,
   body.is-pdf-active div#logseq-plugin-sticky-popup--sticky-calendar,
-  body.is-pdf-active div#logseq-plugin-sticky-popup--sticky-weekly,
   body:not([data-page="home"]).sp-textVisible-Journal div#logseq-plugin-sticky-popup--sticky,
   body:not([data-page="page"]).sp-textVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky,
   body.sp-textVisible-None div#logseq-plugin-sticky-popup--sticky,
   body:not([data-page="home"]).sp-calendarVisible-Journal div#logseq-plugin-sticky-popup--sticky-calendar,
   body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky-calendar,
-  body.sp-calendarVisible-None div#logseq-plugin-sticky-popup--sticky-calendar,
-  body:not([data-page="home"]).sp-weeklyVisible-Journal div#logseq-plugin-sticky-popup--sticky-weekly,
-  body:not([data-page="page"]).sp-weeklyVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky-weekly,
-  body.sp-weeklyVisible-None div#logseq-plugin-sticky-popup--sticky-weekly {
+  body.sp-calendarVisible-None div#logseq-plugin-sticky-popup--sticky-calendar {
     display: none;
   }
 
   /* TODO: awesome UIプラグインで、Navigation menuが隠れる件(Sticky Textが上になる) */
 
   body:not(.sp-textZIndex) div#logseq-plugin-sticky-popup--sticky,
-  body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar,
-  body:not(.sp-weeklyZIndex) div#logseq-plugin-sticky-popup--sticky-weekly {
+  body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar {
     z-index: 1!important;
   }
   body.sp-textZIndex div#logseq-plugin-sticky-popup--sticky,
-  body.sp-calendarZIndex div#logseq-plugin-sticky-popup--sticky-calendar,
-  body.sp-weeklyZIndex div#logseq-plugin-sticky-popup--sticky-weekly {
+  body.sp-calendarZIndex div#logseq-plugin-sticky-popup--sticky-calendar {
     z-index: var(--ls-z-index-level-1)!important;
   }
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
@@ -361,45 +321,6 @@ function userSettings() {
       default: true,
       description: "",
     },
-    {
-      key: "",
-      title: "",
-      type: "heading",
-      default: "",
-      description: "",
-    },
-    {
-      key: "",
-      title: "Sticky Weekly (Demo)",
-      type: "heading",
-      default: "",
-      description: `
-      Development stage👷🚧
-      
-      `,
-    },//"Support ISO 8601" setting option should not be changed after the fact, as it has an impact on number of week in year. TODO:
-    {
-      key: "stickyWeeklyVisible",
-      title: "Visible or not",
-      type: "enum",
-      enumChoices: ["Journal", "Not-Journal", "All", "None"],
-      default: "None",
-      description: "",
-    },
-    {
-      key: "stickyWeeklyZIndex",
-      title: "Showing over sidebar or not",
-      type: "boolean",
-      default: true,
-      description: "",
-    },
-    // { TODO:
-    //   key: "weeklyISO",
-    //   title: "Support ISO 8601 (for week of year)",
-    //   type: "boolean",
-    //   default: false,
-    //   description: "true: U.K. Europe / false: U.S. Japan (local)",
-    // },
   ];
   logseq.useSettingsSchema(settingsTemplate);
 }
@@ -532,184 +453,6 @@ function mainStickyCalendar() {
 }
 
 
-//Sticky Weekly
-async function mainStickyWeekly() {
-  let left, top;
-  if (logseq.settings?.weeklyScreenX) {
-    left = logseq.settings?.weeklyScreenX + 'px';
-  } else {
-    left = '760px';
-  }
-  if (logseq.settings?.weeklyScreenY) {
-    top = logseq.settings?.weeklyScreenY + 'px';
-  } else {
-    top = '20px';
-  }
-  const seek = await seekWeek();
-  let weekString = "";
-  const { preferredDateFormat } = await logseq.App.getUserConfigs();
-  if (preferredDateFormat === 'yyyy-MM-dd' || preferredDateFormat === 'yyyy/MM/dd' || preferredDateFormat === 'yyyy.MM.dd') {
-    weekString += `<span title="${seek.weekday}">${seek.weekday}</span>, `;
-  }
-  const weekPageName = `${seek.year}/W${seek.numberOfWeek}`;
-  weekString += `<a data-on-click="openWeekPage" data-week="${weekPageName}" title="${weekPageName}">Week ${seek.numberOfWeek}</a>`; //dataは小文字
-  logseq.provideUI({
-    key: `sticky-weekly`,
-    reset: true,
-    template: `
-    <main>
-      ${weekString}
-    </main>
-    <div style="position:absolute;bottom:0;right:0.65em;font-size:small">
-      <button data-on-click="stickyWeeklyPinned" title="Pin: saves the position of this popup">📌Pin</button>
-    </div>
-  `,
-    style: {
-      left,
-      top,
-      width: logseq.settings?.weeklyScreenWidth || "350px",
-      height: logseq.settings?.weeklyScreenHeight || "120px",
-      backgroundColor: 'var(--ls-primary-background-color)',
-      color: 'var(--ls-primary-text-color)',
-      borderRadius: '20px',
-      boxShadow: 'box-shadow: inset -20px 20px 60px var(--ls-primary-background-color), inset 20px -20px 60px var(--ls-secondary-background-color)',
-      paddingLeft: '0.5em',
-      paddingRight: '0.5em',
-    },
-    attrs: {
-      title: 'Sticky Weekly',
-    },
-  });
-
-
-  //seek 週数など
-  async function seekWeek(): Promise<{ year: number, numberOfWeek: number, weekday: string }> {
-    let year, numberOfWeek, weekday;
-    //ユーザー日付形式と週始めの曜日
-    const { preferredStartOfWeek } = await logseq.App.getUserConfigs() as AppUserConfigs;
-
-    // 週の開始曜日を設定（0 = 日曜日 US、1 = 月曜日 JP、2 = 火曜日、...、6 = 土曜日)
-    const startOfWeek: number = Number(preferredStartOfWeek); //string型からnumber型に変換
-    const today = await moment(new Date());
-    weekday = today.format("dddd");
-    // if (logseq.settings?.weeklyISO === true) { TODO:
-    //   //ISO 8601週番号適用
-    //   year = today.format("GGGG");
-    //   numberOfWeek = Number(today.format("WW"));
-    // } else {
-    moment.updateLocale('en', {
-      week: {
-        dow: startOfWeek,
-      },
-    });
-    year = today.format("gggg"); // 年を取得
-    numberOfWeek = today.format("ww"); // 週を取得
-    // }
-    return {
-      year,
-      numberOfWeek,
-      weekday,
-    };
-  }
-}
-//end
-
-
-//Sticky Weekly: Weekly Page (ex. 2023/W17)
-async function createWeekPage(weekName: string) {
-  const page = await logseq.Editor.getPage(weekName) as PageEntity;
-  if (page) {
-    const block = await logseq.Editor.getPageBlocksTree(page.uuid) as BlockEntity[];
-    if (block[1]?.content) {
-      logseq.App.pushState("page", { name: weekName });
-    } else {
-      await createWeeklyTable(page.uuid);
-      logseq.App.pushState("page", { name: weekName });
-    }
-  } else {
-    const create = await logseq.Editor.createPage(weekName, "", { redirect: true, createFirstBlock: true, }) as PageEntity;
-    if (create) {
-      await createWeeklyTable(create.uuid);
-    }
-  }
-}
-
-
-//Sticky Weekly: Weekly Table
-async function createWeeklyTable(uuid: any) {
-  let ww = "ww"; //TODO: ISO 8601週番号適用できているか不明
-
-  //ユーザー日付形式と週始めの曜日
-  const { preferredDateFormat, preferredStartOfWeek } = await logseq.App.getUserConfigs() as AppUserConfigs;
-
-  // 週の開始曜日を設定（0 = 日曜日 US、1 = 月曜日 JP、2 = 火曜日、...、6 = 土曜日)
-  const startOfWeek: number = Number(preferredStartOfWeek); //string型からnumber型に変換
-  const today = await moment(new Date()); // 今日の日付を取得
-  // 週の始まりの日付を求める
-  const startOfCurrentWeek = today.clone().startOf('week').add(startOfWeek, 'days');
-  const startOfPreviousWeek = startOfCurrentWeek.clone().subtract(1, 'week');
-  const startOfNextWeek = startOfCurrentWeek.clone().add(1, 'week');
-  // 前月、今月、来月の日付を取得する
-  const startOfPreviousMonth = today.clone().subtract(1, 'month').startOf('month');
-  const startOfCurrentMonth = today.clone().startOf('month');
-  const startOfNextMonth = today.clone().add(1, 'month').startOf('month');
-
-  // 出力する文字列を生成する
-  let batchLinks: IBatchBlock;
-  if (preferredDateFormat === 'yyyy-MM-dd' || preferredDateFormat === 'yyyy/MM/dd' || preferredDateFormat === 'yyyy.MM.dd') {
-    batchLinks = {
-      content: "### Links",
-      children: [
-        { content: `[[${startOfPreviousMonth.format('gggg[/]MM')}]] < [[${startOfCurrentMonth.format('gggg[/]MM')}]] > [[${startOfNextMonth.format('gggg[/]MM')}]]` },
-        { content: `[[${startOfPreviousWeek.format(`gggg[/W]${ww}`) || ' '}]] < ${startOfCurrentWeek.format(`gggg[/W]${ww}`)} > [[${startOfNextWeek.format(`gggg[/W]${ww}`)}]]` },
-      ],
-    };
-  } else {
-    batchLinks = {
-      content: "### Links",
-      children: [
-        { content: `[[${startOfPreviousWeek.format(`gggg[/W]${ww}`) || ' '}]] < ${startOfCurrentWeek.format(`gggg[/W]${ww}`)} > [[${startOfNextWeek.format(`gggg[/W]${ww}`)}]]` },
-      ],
-    };
-  }
-  let batchDayLinks: IBatchBlock;
-  if (preferredDateFormat === 'yyyy-MM-dd' || preferredDateFormat === 'yyyy/MM/dd' || preferredDateFormat === 'yyyy.MM.dd') {
-    batchDayLinks = {
-      content: `## Week ${startOfCurrentWeek.format(`${ww}`)}`,
-      children: [
-        { content: `### ${startOfCurrentWeek.format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${startOfCurrentWeek.clone().add(1, 'day').format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.clone().add(1, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${startOfCurrentWeek.clone().add(2, 'day').format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.clone().add(2, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${startOfCurrentWeek.clone().add(3, 'day').format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.clone().add(3, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${startOfCurrentWeek.clone().add(4, 'day').format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.clone().add(4, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${startOfCurrentWeek.clone().add(5, 'day').format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.clone().add(5, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${startOfCurrentWeek.clone().add(6, 'day').format('dddd')} ${getDateForPage(new Date(startOfCurrentWeek.clone().add(6, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-      ],
-    };
-  } else {
-    batchDayLinks = {
-      content: `## Week ${startOfCurrentWeek.format(`${ww}`)}`,
-      children: [
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.clone().add(1, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.clone().add(2, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.clone().add(3, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.clone().add(4, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.clone().add(5, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-        { content: `### ${getDateForPage(new Date(startOfCurrentWeek.clone().add(6, 'day').format('gggg/MM/DD')), preferredDateFormat)}` },
-      ],
-    };
-  }
-  //console.log(batchLinks);
-  //console.log(batchDayLinks);
-  await logseq.Editor.insertBatchBlock(uuid, batchLinks, {});
-  await logseq.Editor.insertBatchBlock(uuid, batchDayLinks, {});
-  logseq.Editor.exitEditingMode();
-
-}
-//end
-
-
 //ポジションを記録する
 const stickyPosition = (elementId: string) => {
   const element = parent.document.getElementById(elementId) as HTMLDivElement;
@@ -733,13 +476,6 @@ const stickyPosition = (elementId: string) => {
           calendarScreenY: y || logseq.settings?.calendarScreenY,
           calendarScreenWidth: width || logseq.settings?.calendarScreenWidth,
           calendarScreenHeight: height || logseq.settings?.calendarScreenHeight,
-        });
-      } else if (elementId === "logseq-plugin-sticky-popup--sticky-weekly") {
-        logseq.updateSettings({
-          weeklyScreenX: x || logseq.settings?.weeklyScreenX,
-          weeklyScreenY: y || logseq.settings?.weeklyScreenY,
-          weeklyScreenWidth: width || logseq.settings?.weeklyScreenWidth,
-          weeklyScreenHeight: height || logseq.settings?.weeklyScreenHeight,
         });
       }
     }
