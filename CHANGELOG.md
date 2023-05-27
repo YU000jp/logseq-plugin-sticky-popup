@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.2...v1.8.3) (2023-05-27)
+
+
+### Bug Fixes
+
+* **remove:** `Sticky Weekly` ([67ac33e](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/67ac33e8f85fa2d328a60fc65045905e7bef287a))
+
 ## [1.8.2](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.1...v1.8.2) (2023-05-13)
 
 
