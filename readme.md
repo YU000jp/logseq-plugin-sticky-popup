@@ -17,12 +17,13 @@
 ### Sticky Text (Pop-up)
 
 - Select text and click the same block. Registered in pop-up and automatically locked.
+
 > Markdown is not reflected.
 
 ![image](https://user-images.githubusercontent.com/111847207/233500354-a9302519-a0ee-4d0c-b9b9-0b7ffe4bd24e.png)
 
- "Unlock" is a button that overwrites the next selected text, and "pin" is a button that saves the position of the popup.
- 
+   > "Unlock" is a button that overwrites the next selected text, and "pin" is a button that saves the position of the popup.
+
 ### Sticky Calendar (Pop-up)
 
 <details><summary>Sample</summary>
@@ -67,7 +68,7 @@ Go to the [discussion](https://github.com/YU000jp/logseq-plugin-sticky-popup/dis
 
 ## Author
 
-* GitHub: [YU000jp](https://github.com/YU000jp)
+- GitHub: [YU000jp](https://github.com/YU000jp)
 
 ### My Logseq plugins
 
@@ -93,4 +94,3 @@ Go to the [discussion](https://github.com/YU000jp/logseq-plugin-sticky-popup/dis
 ---
 
 <a href="https://www.buymeacoffee.com/yu000japan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="🍌Buy Me A Coffee" style="height: 42px;width: 152px" ></a>
-
