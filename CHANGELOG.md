@@ -1,3 +1,10 @@
+## [1.8.4](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.3...v1.8.4) (2023-06-17)
+
+
+### Bug Fixes
+
+* **bug:** on click the toolbar button & Cleanup ([b14ae97](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/b14ae97d83a983154ea78e930b135e3bff5295ff))
+
 ## [1.8.3](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.2...v1.8.3) (2023-05-27)
 
 
