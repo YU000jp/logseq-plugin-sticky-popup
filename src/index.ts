@@ -1,6 +1,7 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
-import { BlockEntity, PageEntity, SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
-
+import { AppGraphInfo, BlockEntity, PageEntity, SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin.user";
+const stickyID = `${logseq.baseInfo.id}--sticky`;
+const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
 let graphName = "";//For command pallet
 
 //main
@@ -10,25 +11,25 @@ const main = () => {
   logseq.App.getCurrentGraph().then((graph) => {
     if (graph) { //デモグラフの場合は返り値がnull
       graphName = graph.name;
+
       //ユーザー設定
-      userSettings();
+      logseq.useSettingsSchema(settingsTemplate);
 
       //sticky text
-      mainStickyText();
+      if (logseq.settings!.stickyTextVisible !== "None") mainStickyText();
 
       //Sticky Calendar
-      mainStickyCalendar();
+      if (logseq.settings!.stickyCalendarVisible !== "None") mainStickyCalendar();
     }
   });
 
-  logseq.App.onCurrentGraphChanged(() => {//グラフの変更時
-    logseq.App.getCurrentGraph().then((graph) => {
-      if (graph) { //デモグラフの場合は返り値がnull
-        graphName = graph.name;
-        //sticky text
-        mainStickyText();
-      }
-    });
+  logseq.App.onCurrentGraphChanged(async () => {//グラフの変更時
+    const graph = await logseq.App.getCurrentGraph() as AppGraphInfo | null;
+    if (graph) { //デモグラフの場合は返り値がnull
+      graphName = graph.name;
+      //sticky text
+      if (logseq.settings!.stickyTextVisible !== "None") mainStickyText();
+    }
   });
 
   //CSS
@@ -40,16 +41,13 @@ const main = () => {
 
   //toolbar-item
   logseq.App.registerUIItem("toolbar", {
-    key: 'logseq-plugin-sticky-popup-open',
-    template: `<div data-on-click="openFromToolbar" style="font-size:20px">📌</div>`,
+    key: "Sticky-Popup",
+    template: `<div><a class="button icon" data-on-click="popupOpenFromToolbar" title="Open popups if close them" style="font-size:18px">📌</a></div>`,
   });
 
 
-  //main support
-  parent.document.body.classList.add('is-plugin-logseq-plugin-sticky-popup-enabled');
   logseq.beforeunload(async () => {
-    parent.document.body.classList.remove('is-plugin-logseq-plugin-sticky-popup-enabled');
-    await stickyPosition("logseq-plugin-sticky-popup--sticky");
+    await stickyPosition(stickyID);
   });
 
 
@@ -83,11 +81,11 @@ const main = () => {
   //model
   logseq.provideModel({
     stickyPinned() {
-      stickyPosition("logseq-plugin-sticky-popup--sticky");
+      stickyPosition(stickyID);
       logseq.UI.showMsg("pinned", "success");
     },
     stickyCalendarPinned() {
-      stickyPosition("logseq-plugin-sticky-popup--sticky-calendar");
+      stickyPosition(stickyCalendarID);
       logseq.UI.showMsg("pinned", "success");
     },
     stickyCalendarReset() {
@@ -99,7 +97,7 @@ const main = () => {
       }, 30);
     },
     ActionUnlock() {
-      stickyPosition("logseq-plugin-sticky-popup--sticky");
+      stickyPosition(stickyID);
       logseq.updateSettings({
         stickyLock: false,
       });
@@ -114,29 +112,31 @@ const main = () => {
       logseq.UI.showMsg("Unlocked", "success");
     },
     ActionToRightSidebar() {
-      stickyPosition("logseq-plugin-sticky-popup--sticky");
+      stickyPosition(`${logseq.baseInfo.id}--popup--sticky`);
       logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
     },
     async ActionToPage() {
-      stickyPosition("logseq-plugin-sticky-popup--sticky");
-      const getPage = await logseq.Editor.getPage(logseq.settings?.screenPage);
+      stickyPosition(stickyID);
+      const getPage = await logseq.Editor.getPage(logseq.settings?.screenPage) as PageEntity | null;
       if (getPage) {
         logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
       } else {
         logseq.UI.showMsg("Page not found", "error");
       }
     },
-    async openFromToolbar() {
-      mainStickyText();
-      const div = parent.document.getElementById("logseq-plugin-sticky-popup--sticky-calendar") as HTMLDivElement;
-      if (!div) {
-        await mainStickyCalendar();
-        setTimeout(() => {
-          logseq.App.setRightSidebarVisible("toggle");
-        }, 10);
-        setTimeout(() => {
-          logseq.App.setRightSidebarVisible("toggle");
-        }, 30);
+    popupOpenFromToolbar() {
+      if (logseq.settings!.stickyTextVisible !== "None") mainStickyText();
+      if (logseq.settings!.stickyCalendarVisible !== "None") {
+        const div = parent.document.getElementById(stickyCalendarID) as HTMLDivElement;
+        if (!div) {
+          mainStickyCalendar();
+          setTimeout(() => {
+            logseq.App.setRightSidebarVisible("toggle");
+          }, 10);
+          setTimeout(() => {
+            logseq.App.setRightSidebarVisible("toggle");
+          }, 30);
+        }
       }
     },
   });
@@ -192,43 +192,43 @@ function setCSSclass() {
 //main CSS
 function mainCSS() {
   logseq.provideStyle(String.raw`
-  body.is-pdf-active div#logseq-plugin-sticky-popup--sticky,
-  body.is-pdf-active div#logseq-plugin-sticky-popup--sticky-calendar,
-  body:not([data-page="home"]).sp-textVisible-Journal div#logseq-plugin-sticky-popup--sticky,
-  body:not([data-page="page"]).sp-textVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky,
-  body.sp-textVisible-None div#logseq-plugin-sticky-popup--sticky,
-  body:not([data-page="home"]).sp-calendarVisible-Journal div#logseq-plugin-sticky-popup--sticky-calendar,
-  body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#logseq-plugin-sticky-popup--sticky-calendar,
-  body.sp-calendarVisible-None div#logseq-plugin-sticky-popup--sticky-calendar {
+  body.is-pdf-active div#${stickyID},
+  body.is-pdf-active div#${stickyCalendarID},
+  body:not([data-page="home"]).sp-textVisible-Journal div#${stickyID},
+  body:not([data-page="page"]).sp-textVisible-Not-Journal div#${stickyID},
+  body.sp-textVisible-None div#${stickyID},
+  body:not([data-page="home"]).sp-calendarVisible-Journal div#${stickyCalendarID},
+  body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#${stickyCalendarID},
+  body.sp-calendarVisible-None div#${stickyCalendarID} {
     display: none;
   }
 
   /* TODO: awesome UIプラグインで、Navigation menuが隠れる件(Sticky Textが上になる) */
 
-  body:not(.sp-textZIndex) div#logseq-plugin-sticky-popup--sticky,
-  body:not(.sp-calendarZIndex) div#logseq-plugin-sticky-popup--sticky-calendar {
+  body:not(.sp-textZIndex) div#${stickyID},
+  body:not(.sp-calendarZIndex) div#${stickyCalendarID} {
     z-index: 1!important;
   }
-  body.sp-textZIndex div#logseq-plugin-sticky-popup--sticky,
-  body.sp-calendarZIndex div#logseq-plugin-sticky-popup--sticky-calendar {
+  body.sp-textZIndex div#${stickyID},
+  body.sp-calendarZIndex div#${stickyCalendarID} {
     z-index: var(--ls-z-index-level-1)!important;
   }
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
     z-index: var(--ls-z-index-level-5);
   }
-  div#logseq-plugin-sticky-popup--sticky {
+  div#${stickyID} {
     min-width: 260px;
     max-width: 780px;
     min-height: 120px;
     max-height: 500px;
   }
-  div#logseq-plugin-sticky-popup--sticky-calendar {
+  div#${stickyCalendarID} {
     min-width: 295px;
     max-width: 360px;
     min-height: 280px;
     max-height: 320px;
   }
-  div#logseq-plugin-sticky-popup--sticky-calendar div.ls-ui-float-content {
+  div#${stickyCalendarID} div.ls-ui-float-content {
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -254,77 +254,54 @@ function mainCSS() {
 
 
 //user setting
-function userSettings() {
-  //https://logseq.github.io/plugins/types/SettingSchemaDesc.html
-  const settingsTemplate: SettingSchemaDesc[] = [
-    {
-      key: "",
-      title: "",
-      type: "heading",
-      default: "",
-      description: "",
-    },
-    {
-      key: "",
-      title: "Sticky Text",
-      type: "heading",
-      default: "",
-      description: `
-      Select string and click the same block.
-      Registered in pop-ups and automatically locked. Markdown is not reflected.
-      `,
-    },
-    { //select ジャーナルのみ、ジャーナル以外、全てのページ
-      key: "stickyTextVisible",
-      title: "Visible or not",
-      type: "enum",
-      enumChoices: ["Journal", "Not-Journal", "All", "None"],
-      default: "All",
-      description: "",
-    },
-    {
-      key: "stickyTextZIndex",
-      title: "Showing over sidebar or not",
-      type: "boolean",
-      default: true,
-      description: "",
-    },
-    {
-      key: "",
-      title: "",
-      type: "heading",
-      default: "",
-      description: "",
-    },
-    {
-      key: "",
-      title: "Sticky Calendar",
-      type: "heading",
-      default: "",
-      description: `
-      Require rendering of Block Calendar Plugin
-      Set 'custom' and '#StickyCalendar'(Provide CSS selector) on the plugin settings
-      `,
-    },
-    {
-      key: "stickyCalendarVisible",
-      title: "Visible or not",
-      type: "enum",
-      enumChoices: ["Journal", "Not-Journal", "All", "None"],
-      default: "Journal",
-      description: "",
-    },
-    {
-      key: "stickyCalendarZIndex",
-      title: "Showing over sidebar or not",
-      type: "boolean",
-      default: true,
-      description: "",
-    },
-  ];
-  logseq.useSettingsSchema(settingsTemplate);
-}
-//end user setting
+//https://logseq.github.io/plugins/types/SettingSchemaDesc.html
+const settingsTemplate: SettingSchemaDesc[] = [
+  {
+    key: "",
+    title: "Sticky Text",
+    type: "heading",
+    default: "",
+    description: "Select string and click the same block. Registered in pop-ups and automatically locked. Markdown is not reflected.",
+  },
+  { //select ジャーナルのみ、ジャーナル以外、全てのページ
+    key: "stickyTextVisible",
+    title: "(Sticky Text) Visible or not",
+    type: "enum",
+    enumChoices: ["Journal", "Not-Journal", "All", "None"],
+    default: "All",
+    description: "",
+  },
+  {
+    key: "stickyTextZIndex",
+    title: "(Sticky Text) Showing over sidebar or not",
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+  {
+    key: "",
+    title: "Sticky Calendar",
+    type: "heading",
+    default: "",
+    description: "Require rendering of Block Calendar Plugin. Set `custom` and `#StickyCalendar`(Provide CSS selector) on the plugin settings.",
+  },
+  {
+    key: "stickyCalendarVisible",
+    title: "(Sticky Calendar) Visible or not",
+    type: "enum",
+    enumChoices: ["Journal", "Not-Journal", "All", "None"],
+    default: "Journal",
+    description: "",
+  },
+  {
+    key: "stickyCalendarZIndex",
+    title: "(Sticky Calendar) Showing over sidebar or not",
+    type: "boolean",
+    default: true,
+    description: "",
+  },
+];
+
 
 
 const dsl = (flag, text, x, y, width, height, uuid, pageName) => {
@@ -336,7 +313,7 @@ const dsl = (flag, text, x, y, width, height, uuid, pageName) => {
       stickyUnlock.style.display = "unset";
     }
   } else {
-    stickyPosition("logseq-plugin-sticky-popup--sticky");
+    stickyPosition(stickyID);
     logseq.updateSettings({
       currentGraph: graphName,
       screenText: text,
@@ -457,20 +434,20 @@ function mainStickyCalendar() {
 const stickyPosition = (elementId: string) => {
   const element = parent.document.getElementById(elementId) as HTMLDivElement;
   if (element) {
-    const rect = element.getBoundingClientRect();
+    const rect = element.getBoundingClientRect() as DOMRect;
     if (rect) {
       const x: number = Math.round(rect.x);
       const y: number = Math.round(rect.y);
       const width = element.style.width;
       const height = element.style.height;
-      if (elementId === "logseq-plugin-sticky-popup--sticky") {
+      if (elementId === stickyID) {
         logseq.updateSettings({
           screenX: x || logseq.settings?.screenX,
           screenY: y || logseq.settings?.screenY,
           screenWidth: width || logseq.settings?.screenWidth,
           screenHeight: height || logseq.settings?.screenHeight,
         });
-      } else if (elementId === "logseq-plugin-sticky-popup--sticky-calendar") {
+      } else if (elementId === stickyCalendarID) {
         logseq.updateSettings({
           calendarScreenX: x || logseq.settings?.calendarScreenX,
           calendarScreenY: y || logseq.settings?.calendarScreenY,
