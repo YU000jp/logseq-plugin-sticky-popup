@@ -6,13 +6,11 @@
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
 [![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) Published 2023/04/18
 
-## Demo
+## Features
 
-> Pop-ups possible to be moved around and resized.
+- Pop-ups possible to be moved around and resized.
 
 ![demo image](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
-
-## Features
 
 ### Sticky Text (Pop-up)
 
@@ -57,6 +55,25 @@
 ### Usage
 
 - Open the plugin settings screen and do the necessary changes. By default, Sticky Calendar is set to "off" in the initial configuration.
+
+### Plugin Settings
+
+- (Sticky Text) Visible or not: select
+   - `Journal`
+   - `Not-Journal`
+   - `All` default
+   - `None`
+- (Sticky Text) Showing over sidebar or not: boolean
+   - `true` default
+   - `false`
+- (Sticky Calendar) Visible or not: select
+   - `Journal` default
+   - `Not-Journal`
+   - `All`
+   - `None`
+- (Sticky Calendar) Showing over sidebar or not: boolean
+   - `true` default
+   - `false`
 
 ## Question
 
