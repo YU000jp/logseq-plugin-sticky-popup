@@ -1,4 +1,4 @@
-# Logseq Plugin: Sticky Popup
+# Logseq Plugin: *Sticky Popup* 📍
 
 - Plugin for showing selected text in a movable pop-up and positioning calendar.
 
