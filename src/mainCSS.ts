@@ -1,8 +1,6 @@
 
 //end Setting changed
 
-import { stickyCalendarID, stickyID } from "./lib";
-
 //set CSS class
 export function setCSSclass() {
   if (logseq.settings?.stickyTextVisible) {
@@ -23,7 +21,8 @@ export function setCSSclass() {
 
 //main CSS
 export function loadMainCSS() {
-
+  const stickyID = `${logseq.baseInfo.id}--sticky`;
+  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
   logseq.provideStyle(String.raw`
   body.is-pdf-active div#${stickyID},
   body.is-pdf-active div#${stickyCalendarID},

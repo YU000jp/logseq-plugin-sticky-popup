@@ -1,5 +1,4 @@
-export const stickyID = `${logseq.baseInfo.id}--sticky`;
-export const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
+
 
 //encodeHtml
 export function encodeHtml(str: string): string {
