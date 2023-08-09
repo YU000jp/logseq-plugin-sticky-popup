@@ -11,8 +11,8 @@ export let graphName = "";//For command pallet
 
 //main
 const main = () => {
-const stickyID = `${logseq.baseInfo.id}--sticky`;
-const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
+  const stickyID = `${logseq.baseInfo.id}--sticky`;
+  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
   //check current graph
   logseq.App.getCurrentGraph().then((graph) => {
     if (graph) { //デモグラフの場合は返り値がnull
@@ -146,5 +146,6 @@ const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
   });
   //end model
 }
+
 
 logseq.ready(main).catch(console.error);

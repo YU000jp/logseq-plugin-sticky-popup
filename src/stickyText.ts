@@ -1,9 +1,8 @@
 import { graphName } from '.';
-import { stickyPosition } from './lib';
+import { stickyID, stickyPosition } from './lib';
 import { encodeHtml } from './lib';
 
 export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName) => {
-  const stickyID = `${logseq.baseInfo.id}--sticky`;
   if (flag.lock === true) {
     //
   } else if (logseq.settings?.stickyLock === true) {
