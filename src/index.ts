@@ -87,10 +87,10 @@ const main = () => {
   //model
   logseq.provideModel({
     stickyPinned() {
-      stickyPosition(stickyID);
+      stickyPosition(stickyID, true);
     },
     stickyCalendarPinned() {
-      stickyPosition(stickyCalendarID);
+      stickyPosition(stickyCalendarID, true);
     },
     stickyCalendarReset() {
       setTimeout(() => {
