@@ -58,7 +58,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     type: "boolean",
     title: "Show the board when journal template is loaded",
     description: "",
-    default: true,
+    default: false,
   },
   {
     key: "enableOverdueLogseqLoaded",
@@ -88,7 +88,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     type: "boolean",
     title: "Show the board when Logseq loaded",
     description: "",
-    default: false,
+    default: true,
   },
   {
     key: "enableMessageBoxTimeout",
