@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.4...v1.8.5) (2023-08-09)
+
+
+### Bug Fixes
+
+* **bug:** not work ([da0e8a1](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/da0e8a187d8b26d441be33cd0b6dbd5f73af96a6))
+
 ## [1.8.4](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.3...v1.8.4) (2023-06-17)
 
 
