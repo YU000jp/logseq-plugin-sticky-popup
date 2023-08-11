@@ -1,3 +1,17 @@
+# [1.9.0](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.5...v1.9.0) (2023-08-11)
+
+
+### Bug Fixes
+
+* **bug:** pinned ([6dddfda](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/6dddfdacbf59cd1914f50fb17ea35428c49eadf6))
+
+
+### Features
+
+* **Daily Message:** free position and size (Support pinned) ([2dded45](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/2dded45534fda872cd3b663bd10ac3a8266d877f))
+* popup button position & when unlock remove recoded text ([e2c24f2](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/e2c24f21fd420bc2855b633bd07ddd158e31734c))
+* **Sticky Text:** without markdown ([8d23869](https://github.com/YU000jp/logseq-plugin-sticky-popup/commit/8d238691afee52c64fde67ff716526483e050cf2))
+
 ## [1.8.5](https://github.com/YU000jp/logseq-plugin-sticky-popup/compare/v1.8.4...v1.8.5) (2023-08-09)
 
 
