@@ -1,33 +1,36 @@
 import '@logseq/libs'; //https://plugins-doc.logseq.com/
 import { AppGraphInfo, BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
-import { settingsTemplate } from './setting';
 import { loadStickyText, stickyTextOpenUI } from './stickyText';
 import { loadMainCSS, setCSSclass } from './mainCSS';
 import { loadStickyCalendar } from './stickyCalendar';
-import { stickyPosition } from './lib';
-import { onSettingsChangedCallback } from './setting';
-
+import { stickyTextPosition, stickyCalendarPosition, stickyDailyMessagePosition } from './lib';
+import { fromJournals } from "./dailyMessage";
+import { settingsTemplate } from './settings';
+import { setUIoverdue } from "./overdue";
+import { onSettingsChangedForDayOfWeekMessage, dailyMessageOpenUI, } from "./dailyMessage";
 export let graphName = "";//For command pallet
+export const keyStickyDailyMessage = "sticky-daily-message";
 
 //main
 const main = () => {
-  const stickyID = `${logseq.baseInfo.id}--sticky`;
-  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
+  const stickyId = `${logseq.baseInfo.id}--sticky`;
+  const stickyCalendarId = `${logseq.baseInfo.id}--sticky-calendar`;
+  const stickyDailyMessageId = `${logseq.baseInfo.id}--${keyStickyDailyMessage}`;
   //check current graph
   logseq.App.getCurrentGraph().then((graph) => {
-    if (graph) { //デモグラフの場合は返り値がnull
+    if (graph)  //デモグラフの場合は返り値がnull
       graphName = graph.name;
-
-      //ユーザー設定
-      logseq.useSettingsSchema(settingsTemplate);
-
-      //sticky text
-      if (logseq.settings!.stickyTextVisible !== "None") loadStickyText();
-
-      //Sticky Calendar
-      if (logseq.settings!.stickyCalendarVisible !== "None") loadStickyCalendar();
-    }
   });
+  //ユーザー設定
+  logseq.useSettingsSchema(settingsTemplate);
+  if (!logseq.settings) setTimeout(() => logseq.showSettingsUI(), 300);
+
+  //sticky text
+  if (logseq.settings!.stickyTextVisible !== "None") loadStickyText();
+
+  //Sticky Calendar
+  if (logseq.settings!.stickyCalendarVisible !== "None") loadStickyCalendar();
+
 
   logseq.App.onCurrentGraphChanged(async () => {//グラフの変更時
     const graph = await logseq.App.getCurrentGraph() as AppGraphInfo | null;
@@ -44,23 +47,24 @@ const main = () => {
   //set CSS class
   setCSSclass();
 
-
   //toolbar-item
+  logseq.App.registerUIItem('toolbar', {
+    key: 'openOverdue',
+    template: `<div><a class="button icon" data-on-click="overdueFromToolbar" title="Open overdue task board ( for check )" style="font-size:19px">⏳</a></div>`,
+  });
+  logseq.App.registerUIItem('toolbar', {
+    key: 'openMessageBox',//その日のみ表示
+    template: `<div><a class="button icon" data-on-click="messageBoxFromToolbar" title="Open daily message board ( only today )" style="font-size:19px">💬</a></div>`,
+  });
   logseq.App.registerUIItem("toolbar", {
     key: "Sticky-Popup",
-    template: `<div><a class="button icon" data-on-click="popupOpenFromToolbar" title="Open popups if close them" style="font-size:18px">📌</a></div>`,
+    template: `<div><a class="button icon" data-on-click="popupOpenFromToolbar" title="Open popups ( if close them )" style="font-size:19px">📌</a></div>`,
   });
 
+  logseq.App.onTodayJournalCreated(async ({ title }) => await fromJournals(title));
 
-  logseq.beforeunload(async () => {
-    await stickyPosition(stickyID);
-  });
-
-
-  //Setting changed
-  logseq.onSettingsChanged((newSettings: LSPluginBaseInfo['settings'], oldSettings: LSPluginBaseInfo['settings']) => {
-    onSettingsChangedCallback(newSettings, oldSettings);
-  });
+  if (logseq.settings!.enableOverdueLogseqLoaded === true) setTimeout(() => setUIoverdue(false), 300);
+  if (logseq.settings!.enableMessageBoxLogseqLoaded === true) setTimeout(() => dailyMessageOpenUI(new Date()), 300);
 
 
   //選択したテキストをdraggableゾーン(Sticky)に表示
@@ -68,7 +72,7 @@ const main = () => {
     if (logseq.settings?.stickyLock === true) {
       return;
     } else if (logseq.settings?.ScreenText) {
-      logseq.provideUI(stickyTextOpenUI({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage));
+      await stickyTextOpenUI({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage);
     } else {
       const current = await logseq.Editor.getCurrentBlock() as BlockEntity;
       const currentPage = await logseq.Editor.getCurrentPage() as PageEntity;
@@ -78,7 +82,7 @@ const main = () => {
         const y = logseq.settings?.screenY || 695;
         const width = logseq.settings?.screenWidth || "195px";
         const height = logseq.settings?.screenHeight || "225px";
-        await logseq.provideUI(stickyTextOpenUI({}, event.text, x, y, width, height, current.uuid, PageName));
+        await stickyTextOpenUI({}, event.text, x, y, width, height, current.uuid, PageName);
       }
     }
   });
@@ -86,66 +90,87 @@ const main = () => {
 
   //model
   logseq.provideModel({
-    stickyPinned() {
-      stickyPosition(stickyID);
+    overdueFromToolbar: () => setUIoverdue(false),
+    messageBoxFromToolbar: () => {
+      if (logseq.settings!.toggleSunday === false &&
+        logseq.settings!.toggleMonday === false &&
+        logseq.settings!.toggleTuesday === false &&
+        logseq.settings!.toggleWednesday === false &&
+        logseq.settings!.toggleThursday === false &&
+        logseq.settings!.toggleFriday === false &&
+        logseq.settings!.toggleSaturday === false) {
+        //いずれの曜日にもDaily Messageが設定されていない場合
+        logseq.UI.showMsg("Daily messages need to be set for each day of the week on plugin settings.", "warning", { timeout: 3000 });
+        return;
+      }
+      dailyMessageOpenUI(new Date());
     },
-    stickyCalendarPinned() {
-      stickyPosition(stickyCalendarID);
-    },
-    stickyCalendarReset() {
+    stickyPinned: () => stickyTextPosition(stickyId, true),
+    stickyCalendarPinned: () => stickyCalendarPosition(stickyCalendarId, true),
+    stickyPinnedDailyMessage: () => stickyDailyMessagePosition(stickyDailyMessageId, true),
+    stickyCalendarReset: () => {
       setTimeout(() => {
         logseq.App.setRightSidebarVisible("toggle");
+        setTimeout(() => logseq.App.setRightSidebarVisible("toggle"), 30);
       }, 10);
-      setTimeout(() => {
-        logseq.App.setRightSidebarVisible("toggle");
-      }, 30);
     },
-    ActionUnlock() {
-      stickyPosition(stickyID);
+    ActionUnlock: () => {
+      stickyTextPosition(stickyId);
       logseq.updateSettings({
         stickyLock: false,
+        screenPage: "",
+        screenUuid: "",
+        screenText: "",
       });
-      const stickyLock = parent.document.getElementById("stickyLock") as HTMLSpanElement;
-      if (stickyLock) {
-        stickyLock.style.display = "none";
-      }
-      const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement;
-      if (stickyUnlock) {
-        stickyUnlock.style.display = "none";
-      }
+      const stickyLock = parent.document.getElementById("stickyLock") as HTMLSpanElement | null;
+      if (stickyLock) stickyLock.style.display = "none";
+      const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement | null;
+      if (stickyUnlock) stickyUnlock.style.display = "none";
+      const textElement = parent.document.getElementById(`${stickyId}--text`) as HTMLDivElement | null;
+      if (textElement) textElement.innerHTML = "";
       logseq.UI.showMsg("Unlocked", "success");
     },
-    ActionToRightSidebar() {
-      stickyPosition(`${logseq.baseInfo.id}--popup--sticky`);
-      logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
-    },
-    async ActionToPage() {
-      stickyPosition(stickyID);
-      const getPage = await logseq.Editor.getPage(logseq.settings?.screenPage) as PageEntity | null;
-      if (getPage) {
-        logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
-      } else {
-        logseq.UI.showMsg("Page not found", "error");
-      }
-    },
-    popupOpenFromToolbar() {
+    popupOpenFromToolbar: () => {
       if (logseq.settings!.stickyTextVisible !== "None") loadStickyText();
       if (logseq.settings!.stickyCalendarVisible !== "None") {
-        const div = parent.document.getElementById(stickyCalendarID) as HTMLDivElement;
+        const div = parent.document.getElementById(stickyCalendarId) as HTMLDivElement | null;
         if (!div) {
           loadStickyCalendar();
           setTimeout(() => {
             logseq.App.setRightSidebarVisible("toggle");
+            setTimeout(() => logseq.App.setRightSidebarVisible("toggle"), 30);
           }, 10);
-          setTimeout(() => {
-            logseq.App.setRightSidebarVisible("toggle");
-          }, 30);
         }
       }
     },
-  });
-  //end model
-}
+  });//end model
 
+
+  logseq.beforeunload(async () => {
+    await stickyTextPosition(stickyId);
+  });
+
+
+    //If change settings, show message box
+    onSettingsChangedForDayOfWeekMessage();
+
+  //Setting changed
+  logseq.onSettingsChanged((newSet: LSPluginBaseInfo['settings'], oldSet: LSPluginBaseInfo['settings']) => {
+    if (oldSet.stickyTextVisible && newSet.stickyTextVisible) {
+      parent.document.body.classList.remove(`sp-textVisible-${oldSet.stickyTextVisible}`);
+      parent.document.body.classList.add(`sp-textVisible-${newSet.stickyTextVisible}`);
+    }
+    if (oldSet.stickyCalendarVisible && newSet.stickyCalendarVisible) {
+      parent.document.body.classList.remove(`sp-calendarVisible-${oldSet.stickyCalendarVisible}`);
+      parent.document.body.classList.add(`sp-calendarVisible-${newSet.stickyCalendarVisible}`);
+    }
+    if (oldSet.stickyTextZIndex === false && newSet.stickyTextZIndex === true) parent.document.body.classList.add("sp-textZIndex");
+    else if (oldSet.stickyTextZIndex === true && newSet.stickyTextZIndex === false) parent.document.body.classList.remove("sp-textZIndex");
+    if (oldSet.stickyCalendarZIndex === false && newSet.stickyCalendarZIndex === true) parent.document.body.classList.add("sp-calendarZIndex");
+    else if (oldSet.stickyCalendarZIndex === true && newSet.stickyCalendarZIndex === false) parent.document.body.classList.remove("sp-calendarZIndex");
+  });
+
+
+}
 
 logseq.ready(main).catch(console.error);

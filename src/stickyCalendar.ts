@@ -5,8 +5,8 @@ export function loadStickyCalendar() {
     reset: true,
     template: `
     <div id="StickyCalendar" style="overflow:hidden"></div>
-    <div style="position:absolute;bottom:0;right:0.15em;font-size:small">
-      <button data-on-click="stickyCalendarReset" title="Reload: For re-rendering">🎮Reload</button> <button data-on-click="stickyCalendarPinned" title="Pin: saves the position of this popup">📌Pin</button>
+    <div id="sticky-event-button">
+      <button data-on-click="stickyCalendarReset" title="Reload: For re-rendering">🎮Reload</button> <button data-on-click="stickyCalendarPinned" title="Pin: saves the position of this popup">📌</button>
     </div>
   `,
     style: {

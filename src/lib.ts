@@ -1,4 +1,17 @@
+import { BlockEntity } from "@logseq/libs/dist/LSPlugin";
 
+export const getWeekdayString = (targetDay: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string) || "default", { weekday: "long" }).format(targetDay);
+
+//yyyymmdd形式をDateに変換
+export const getDateInputJournalDay = (str: string): Date => new Date(
+  Number(str.slice(0, 4)),
+  Number(str.slice(4, 6)) - 1,
+  Number(str.slice(6)),
+  0, 0, 0, 0
+);
+
+//Dateをyyyymmdd形式の文字列に変換
+export const getStringInputDate = (date: Date): string => `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + date.getDate()).slice(-2)}`;
 
 //encodeHtml
 export function encodeHtml(str: string): string {
@@ -15,37 +28,74 @@ export function encodeHtml(str: string): string {
   });
 }
 
-
-//ポジションを記録する
-export const stickyPosition = (elementId: string) => {
-  const stickyID = `${logseq.baseInfo.id}--sticky`;
-  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
-  const element = parent.document.getElementById(elementId) as HTMLDivElement;
-  if (element) {
-    const rect = element.getBoundingClientRect() as DOMRect;
-    if (rect) {
-      const x: number = Math.round(rect.x);
-      const y: number = Math.round(rect.y);
-      const width = element.style.width;
-      const height = element.style.height;
-      if (elementId === stickyID) {
-        logseq.updateSettings({
-          screenX: x || logseq.settings?.screenX,
-          screenY: y || logseq.settings?.screenY,
-          screenWidth: width || logseq.settings?.screenWidth,
-          screenHeight: height || logseq.settings?.screenHeight,
-        });
-      } else if (elementId === stickyCalendarID) {
-        logseq.updateSettings({
-          calendarScreenX: x || logseq.settings?.calendarScreenX,
-          calendarScreenY: y || logseq.settings?.calendarScreenY,
-          calendarScreenWidth: width || logseq.settings?.calendarScreenWidth,
-          calendarScreenHeight: height || logseq.settings?.calendarScreenHeight,
-        });
-        logseq.UI.showMsg("pinned", "success");
-      }
-    }
+export async function removeProperties(properties, blockContent: string): Promise<string> {
+  if (!properties) return blockContent;
+  const keys = Object.keys(properties);
+  for (let j = 0; j < keys.length; j++) {
+    let key = keys[j];
+    const values = properties[key];
+    //backgroundColorをbackground-colorにする
+    //キーの途中で一文字大文字になっている場合は小文字にしてその前にハイフンを追加する
+    key = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+    blockContent = blockContent.replace(`${key}:: ${values}`, "");
+    blockContent = blockContent.replace(`${key}::`, "");
   }
+  return blockContent;
+}
+
+//ポジションを記録する (カレンダー用)
+export const stickyCalendarPosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    calendarScreenX: x,
+    calendarScreenY: y,
+    calendarScreenWidth: width,
+    calendarScreenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
 };
 
+//ポジションを記録する (テキスト用)
+export const stickyTextPosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    screenX: x,
+    screenY: y,
+    screenWidth: width,
+    screenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
+};
+
+export const stickyDailyMessagePosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    dailyMessageScreenX: x,
+    dailyMessageScreenY: y,
+    dailyMessageScreenWidth: width,
+    dailyMessageScreenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
+}
+
+const getRect = (element: HTMLElement) => {
+  const rect = element.getBoundingClientRect() as DOMRect;
+  return {
+    x: Math.round(rect.x) as number,
+    y: Math.round(rect.y) as number,
+    width: element.style.width,
+    height: element.style.height
+  };
+}
+
+export const closeUI = (key: string) => {
+  const element = parent.document.getElementById(logseq.baseInfo.id + `--${key}`) as HTMLDivElement;
+  if (element) element.remove();
+};
 

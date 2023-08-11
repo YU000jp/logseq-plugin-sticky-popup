@@ -21,66 +21,122 @@ export function setCSSclass() {
 
 //main CSS
 export function loadMainCSS() {
-  const stickyID = `${logseq.baseInfo.id}--sticky`;
-  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
+  const baseId = logseq.baseInfo.id;
+  if (baseId === undefined) throw new Error("baseId is undefined");
+  const stickyId = `${baseId}--sticky`;
+  const stickyCalendarId = `${baseId}--sticky-calendar`;
   logseq.provideStyle(String.raw`
-  body.is-pdf-active div#${stickyID},
-  body.is-pdf-active div#${stickyCalendarID},
-  body:not([data-page="home"]).sp-textVisible-Journal div#${stickyID},
-  body:not([data-page="page"]).sp-textVisible-Not-Journal div#${stickyID},
-  body.sp-textVisible-None div#${stickyID},
-  body:not([data-page="home"]).sp-calendarVisible-Journal div#${stickyCalendarID},
-  body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#${stickyCalendarID},
-  body.sp-calendarVisible-None div#${stickyCalendarID} {
+  body.is-pdf-active div#${stickyId},
+  body.is-pdf-active div#${stickyCalendarId},
+  body:not([data-page="home"]).sp-textVisible-Journal div#${stickyId},
+  body:not([data-page="page"]).sp-textVisible-Not-Journal div#${stickyId},
+  body.sp-textVisible-None div#${stickyId},
+  body:not([data-page="home"]).sp-calendarVisible-Journal div#${stickyCalendarId},
+  body:not([data-page="page"]).sp-calendarVisible-Not-Journal div#${stickyCalendarId},
+  body.sp-calendarVisible-None div#${stickyCalendarId} {
     display: none;
   }
-
-  /* TODO: awesome UIプラグインで、Navigation menuが隠れる件(Sticky Textが上になる) */
-
-  body:not(.sp-textZIndex) div#${stickyID},
-  body:not(.sp-calendarZIndex) div#${stickyCalendarID} {
+  body:not(.sp-textZIndex) div#${stickyId},
+  body:not(.sp-calendarZIndex) div#${stickyCalendarId} {
     z-index: 1!important;
   }
-  body.sp-textZIndex div#${stickyID},
-  body.sp-calendarZIndex div#${stickyCalendarID} {
+  body.sp-textZIndex div#${stickyId},
+  body.sp-calendarZIndex div#${stickyCalendarId} {
     z-index: var(--ls-z-index-level-1)!important;
-  }import { stickyID } from '.';
-import { stickyCalendarID } from '.';
-
+  }
   nav[aria-label="Navigation menu"]{ /* navigation menuのz-indexを変更 */
     z-index: var(--ls-z-index-level-5);
   }
-  div#${stickyID} {
+  div#${stickyId} {
     min-width: 260px;
     max-width: 780px;
     min-height: 120px;
     max-height: 500px;
   }
-  div#${stickyCalendarID} {
+  div#${stickyCalendarId} {
     min-width: 295px;
     max-width: 360px;
     min-height: 280px;
     max-height: 320px;
   }
-  div#${stickyCalendarID} div.ls-ui-float-content {
+  div#${stickyCalendarId} div.ls-ui-float-content {
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  div#sticky-actions-left {
+  div#sticky-event-left {
     position:absolute;
     bottom:0;
     font-size:small;
     background:var(--ls-primary-background-color);
-    margin-right:6.5em;
+    margin-right:.5em;
   }
-  div#sticky-actions-right {
+  div#sticky-event-button {
     position: absolute;
-    bottom: 0;
-    right: .15em;
-    font-size: small;
+    top: .2em;
+    right: 3em;
+    font-size: .94em;
     background:var(--ls-primary-background-color);
+  }
+  div#sticky-event-button button {
+    margin-left: .2em;
+  }
+
+
+  div#${baseId}--overdue span.block-marker {
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0 0.8em;
+    border: 1px solid;
+    margin-right: 0.8em;
+  }
+  div#${baseId}--overdue li {
+    margin-bottom: 0.5em;
+  }
+  /* require Logseq v0.9.10 or later */
+  body:has(div#root main.ls-right-sidebar-open) div:is(#${baseId}--overdue,#${baseId}--messageBox) {
+    display: none;
+  }
+  div#root main div[data-id="${baseId}"] textarea.form-input {
+    height: 12em;
+    font-size: unset;
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-primary-background-color)"] {
+    background:var(--ls-primary-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-secondary-background-color)"] {
+    background:var(--ls-secondary-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-tertiary-background-color)"] {
+    background:var(--ls-tertiary-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-quaternary-background-color)"] {
+    background:var(--ls-quaternary-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-table-tr-even-background-color)"] {
+    background:var(--ls-table-tr-even-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-block-properties-background-color)"] {
+    background:var(--ls-block-properties-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="backgroundColor"] select option[value="var(--ls-page-properties-background-color)"] {
+    color:var(--ls-page-properties-background-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="fontColor"] select option[value="var(--ls-primary-text-color)"] {
+    color:var(--ls-primary-text-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="fontColor"] select option[value="var(--ls-secondary-text-color)"] {
+    color:var(--ls-secondary-text-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="fontColor"] select option[value="var(--ls-title-text-color)"] {
+    color:var(--ls-title-text-color)
+  }
+  div#root main div[data-id="${baseId}"] div[data-key="fontColor"] select option[value="var(--ls-link-text-color)"] {
+    color:var(--ls-link-text-color)
+  }
+  div#root main div[data-id="${baseId}"] div.cp__plugins-settings-inner div.heading-item {
+    outline:2px solid;
   }
   `);
 }
