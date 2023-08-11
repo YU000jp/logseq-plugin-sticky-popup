@@ -1,3 +1,4 @@
+import { PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { graphName } from '.';
 import { stickyPosition } from './lib';
 import { encodeHtml } from './lib';
@@ -20,21 +21,20 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
     });
   }
   let toPage = "";
-  if (pageName && logseq.settings?.currentGraph === graphName) toPage = `<button data-on-click="ActionToPage" title="To the page [[${encodeHtml(pageName)}]]" style="overflow:auto">📄${pageName}</button>`;
-  let toRightSidebar = "";
-  if (uuid && logseq.settings?.currentGraph === graphName) toRightSidebar = `<button data-on-click="ActionToRightSidebar" title="On right sidebar">👉On right-Sidebar</button><br/>`;
-  return {
+  if (pageName && logseq.settings?.currentGraph === graphName) toPage = `<a data-ref="pageName" data-on-click="ActionToPage" id="${stickyID}--eventToPage" title="[[${encodeHtml(pageName)}]]" style="overflow:auto">📄${pageName}</a>`;
+
+  logseq.provideUI({
     key: 'sticky',
     reset: true,
     template: `
-      <div style="padding:10px;overflow:auto">
-          <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" title="${encodeHtml(text)}">${text}</a></p>
+      <div style="padding:10px;overflow:auto" title="">
+          <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" id="${stickyID}--text" title="${encodeHtml(text)}">${text}</a></p>
         <div id="sticky-actions-left">
-          ${toRightSidebar}${toPage}
+          ${toPage}
         </div>
         <div id="sticky-actions-right">
-          <button data-on-click="ActionUnlock" id="stickyUnlock"><span style="text-decoration:underline;font-size:1.2em" title="Unlock: Overwrites the next selected text">🔓Unlock</span></button><br/>
-          <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
+          <button data-on-click="ActionUnlock" id="stickyUnlock"><span style="text-decoration:underline;font-size:1.2em" title="Unlock: Overwrites the next selected text">🔓</span></button>
+          <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌</button>
         </div>
       </div>
     `,
@@ -50,14 +50,27 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
     attrs: {
       title: 'Sticky Text',
     },
-  };
+  });
+  setTimeout(() => {
+    const elementEventToPage = parent.document.getElementById(`${stickyID}--eventToPage`) as HTMLButtonElement | null;
+    if (elementEventToPage) elementEventToPage.addEventListener('click', async ({ shiftKey }) => {
+      stickyPosition(stickyID);
+      if (shiftKey === true) {
+        logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
+      } else {
+        if (await logseq.Editor.getPage(logseq.settings?.screenPage) as PageEntity | null) logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
+        else logseq.UI.showMsg("Page not found", "error");
+      }
+    });
+  
+  }, 100);
 };
 
 //Sticky Text
 export function loadStickyText() {
   //読み込み時
   if (logseq.settings?.screenText) {
-    logseq.provideUI(stickyTextOpenUI({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage));
+    stickyTextOpenUI({ lock: true, }, logseq.settings.screenText, logseq.settings.screenX, logseq.settings.screenY, logseq.settings.screenWidth, logseq.settings.screenHeight, logseq.settings.screenUuid, logseq.settings.screenPage);
   } else { //値がない場合(初回)
     newStickyText();
   }

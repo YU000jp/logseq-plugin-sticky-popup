@@ -68,7 +68,7 @@ const main = () => {
     if (logseq.settings?.stickyLock === true) {
       return;
     } else if (logseq.settings?.ScreenText) {
-      logseq.provideUI(stickyTextOpenUI({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage));
+      await stickyTextOpenUI({ lock: true, }, logseq.settings?.screenText, logseq.settings?.screenX, logseq.settings?.screenY, logseq.settings?.screenWidth, logseq.settings?.screenHeight, logseq.settings?.screenUuid, logseq.settings?.screenPage);
     } else {
       const current = await logseq.Editor.getCurrentBlock() as BlockEntity;
       const currentPage = await logseq.Editor.getCurrentPage() as PageEntity;
@@ -78,7 +78,7 @@ const main = () => {
         const y = logseq.settings?.screenY || 695;
         const width = logseq.settings?.screenWidth || "195px";
         const height = logseq.settings?.screenHeight || "225px";
-        await logseq.provideUI(stickyTextOpenUI({}, event.text, x, y, width, height, current.uuid, PageName));
+        await stickyTextOpenUI({}, event.text, x, y, width, height, current.uuid, PageName);
       }
     }
   });
@@ -104,6 +104,9 @@ const main = () => {
       stickyPosition(stickyID);
       logseq.updateSettings({
         stickyLock: false,
+        screenPage: "",
+        screenUuid: "",
+        screenText: "",
       });
       const stickyLock = parent.document.getElementById("stickyLock") as HTMLSpanElement;
       if (stickyLock) {
@@ -113,20 +116,11 @@ const main = () => {
       if (stickyUnlock) {
         stickyUnlock.style.display = "none";
       }
-      logseq.UI.showMsg("Unlocked", "success");
-    },
-    ActionToRightSidebar() {
-      stickyPosition(`${logseq.baseInfo.id}--popup--sticky`);
-      logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
-    },
-    async ActionToPage() {
-      stickyPosition(stickyID);
-      const getPage = await logseq.Editor.getPage(logseq.settings?.screenPage) as PageEntity | null;
-      if (getPage) {
-        logseq.Editor.scrollToBlockInPage(logseq.settings?.screenPage, logseq.settings?.screenUuid);
-      } else {
-        logseq.UI.showMsg("Page not found", "error");
+      const textElement = parent.document.getElementById(`${stickyID}--text`) as HTMLDivElement;
+      if (textElement) {
+        textElement.innerHTML = "";
       }
+      logseq.UI.showMsg("Unlocked", "success");
     },
     popupOpenFromToolbar() {
       if (logseq.settings!.stickyTextVisible !== "None") loadStickyText();

@@ -73,14 +73,17 @@ import { stickyCalendarID } from '.';
     bottom:0;
     font-size:small;
     background:var(--ls-primary-background-color);
-    margin-right:6.5em;
+    margin-right:.5em;
   }
   div#sticky-actions-right {
     position: absolute;
-    bottom: 0;
-    right: .15em;
-    font-size: small;
+    top: .2em;
+    right: 3em;
+    font-size: .94em;
     background:var(--ls-primary-background-color);
+  }
+  div#sticky-actions-right button {
+    margin-left: .2em;
   }
   `);
 }

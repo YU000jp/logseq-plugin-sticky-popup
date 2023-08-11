@@ -35,6 +35,7 @@ export const stickyPosition = (elementId: string) => {
           screenWidth: width || logseq.settings?.screenWidth,
           screenHeight: height || logseq.settings?.screenHeight,
         });
+        logseq.UI.showMsg("pinned", "success");
       } else if (elementId === stickyCalendarID) {
         logseq.updateSettings({
           calendarScreenX: x || logseq.settings?.calendarScreenX,
