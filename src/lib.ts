@@ -1,4 +1,16 @@
 
+export const getWeekdayString = (targetDay: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string) || "default", { weekday: "long" }).format(targetDay);
+
+//yyyymmdd形式をDateに変換
+export const getDateInputJournalDay = (str: string): Date => new Date(
+  Number(str.slice(0, 4)),
+  Number(str.slice(4, 6)) - 1,
+  Number(str.slice(6)),
+  0, 0, 0, 0
+);
+
+//Dateをyyyymmdd形式の文字列に変換
+export const getStringInputDate = (date: Date): string => `${date.getFullYear()}${("0" + (date.getMonth() + 1)).slice(-2)}${("0" + date.getDate()).slice(-2)}`;
 
 //encodeHtml
 export function encodeHtml(str: string): string {
@@ -14,7 +26,6 @@ export function encodeHtml(str: string): string {
     return htmlEntities[s];
   });
 }
-
 
 //ポジションを記録する (カレンダー用)
 export const stickyCalendarPosition = (elementId: string, message?: boolean) => {
@@ -53,3 +64,9 @@ const getRect = (element: HTMLElement) => {
     height: element.style.height
   };
 }
+
+export const closeUI = (key: string) => {
+  const element = parent.document.getElementById(logseq.baseInfo.id + `--${key}`) as HTMLDivElement;
+  if (element) element.remove();
+};
+
