@@ -16,41 +16,40 @@ export function encodeHtml(str: string): string {
 }
 
 
-//ポジションを記録する
-export const stickyPosition = (elementId: string, message?: boolean) => {
-  console.log("stickyPosition");
-  const stickyID = `${logseq.baseInfo.id}--sticky`;
-  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
-  const element = parent.document.getElementById(elementId) as HTMLDivElement;
-  if (element) {
-    const rect = element.getBoundingClientRect() as DOMRect;
-    if (rect) {
-      const x: number = Math.round(rect.x);
-      const y: number = Math.round(rect.y);
-      const width = element.style.width;
-      const height = element.style.height;
-      switch (elementId) {
-        case stickyID:
-          logseq.updateSettings({
-            screenX: x || logseq.settings?.screenX,
-            screenY: y || logseq.settings?.screenY,
-            screenWidth: width || logseq.settings?.screenWidth,
-            screenHeight: height || logseq.settings?.screenHeight,
-          });
-          if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
-          break;
-        case stickyCalendarID:
-          logseq.updateSettings({
-            calendarScreenX: x || logseq.settings?.calendarScreenX,
-            calendarScreenY: y || logseq.settings?.calendarScreenY,
-            calendarScreenWidth: width || logseq.settings?.calendarScreenWidth,
-            calendarScreenHeight: height || logseq.settings?.calendarScreenHeight,
-          });
-          if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
-          break;
-      }
-    }
-  }
+//ポジションを記録する (カレンダー用)
+export const stickyCalendarPosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    calendarScreenX: x,
+    calendarScreenY: y,
+    calendarScreenWidth: width,
+    calendarScreenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
 };
 
+//ポジションを記録する (テキスト用)
+export const stickyTextPosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    screenX: x,
+    screenY: y,
+    screenWidth: width,
+    screenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
+};
 
+const getRect = (element: HTMLElement) => {
+  const rect = element.getBoundingClientRect() as DOMRect;
+  return {
+    x: Math.round(rect.x) as number,
+    y: Math.round(rect.y) as number,
+    width: element.style.width,
+    height: element.style.height
+  };
+}

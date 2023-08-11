@@ -4,10 +4,10 @@ import { settingsTemplate } from './setting';
 import { loadStickyText, stickyTextOpenUI } from './stickyText';
 import { loadMainCSS, setCSSclass } from './mainCSS';
 import { loadStickyCalendar } from './stickyCalendar';
-import { stickyPosition } from './lib';
+import { stickyTextPosition, stickyCalendarPosition } from './lib';
 import { onSettingsChangedCallback } from './setting';
-
 export let graphName = "";//For command pallet
+
 
 //main
 const main = () => {
@@ -53,7 +53,7 @@ const main = () => {
 
 
   logseq.beforeunload(async () => {
-    await stickyPosition(stickyID);
+    await stickyTextPosition(stickyID);
   });
 
 
@@ -87,10 +87,10 @@ const main = () => {
   //model
   logseq.provideModel({
     stickyPinned() {
-      stickyPosition(stickyID, true);
+      stickyTextPosition(stickyID, true);
     },
     stickyCalendarPinned() {
-      stickyPosition(stickyCalendarID, true);
+      stickyCalendarPosition(stickyCalendarID, true);
     },
     stickyCalendarReset() {
       setTimeout(() => {
@@ -101,7 +101,7 @@ const main = () => {
       }, 30);
     },
     ActionUnlock() {
-      stickyPosition(stickyID);
+      stickyTextPosition(stickyID);
       logseq.updateSettings({
         stickyLock: false,
         screenPage: "",
@@ -140,6 +140,5 @@ const main = () => {
   });
   //end model
 }
-
 
 logseq.ready(main).catch(console.error);

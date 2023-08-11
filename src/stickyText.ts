@@ -1,12 +1,12 @@
 import { PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { graphName } from '.';
-import { stickyPosition } from './lib';
+import { stickyTextPosition } from './lib';
 import { encodeHtml } from './lib';
 import { removeMarkdown } from './markdown';
 
 export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName) => {
   if (!text) return;
-  text = removeMarkdown(text,200);
+  text = removeMarkdown(text, 200);
   const stickyID = `${logseq.baseInfo.id}--sticky`;
   if (flag.lock === true) {
     //
@@ -14,7 +14,7 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
     const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement;
     if (stickyUnlock) stickyUnlock.style.display = "unset";
   } else {
-    stickyPosition(stickyID);
+    stickyTextPosition(stickyID);
     logseq.updateSettings({
       currentGraph: graphName,
       screenText: text,
@@ -31,7 +31,7 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
     reset: true,
     template: `
       <div style="padding:10px;overflow:auto" title="">
-          <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" id="${stickyID}--text" title="${encodeHtml(text)}">${text}</a></p>
+          <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" id="${stickyID}--text">${text}</a></p>
         <div id="sticky-event-left">
           ${toPage}
         </div>
@@ -57,7 +57,7 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
   setTimeout(() => {
     const elementEventToPage = parent.document.getElementById(`${stickyID}--eventToPage`) as HTMLButtonElement | null;
     if (elementEventToPage) elementEventToPage.addEventListener('click', async ({ shiftKey }) => {
-      stickyPosition(stickyID);
+      stickyTextPosition(stickyID);
       if (shiftKey === true) {
         logseq.Editor.openInRightSidebar(logseq.settings?.screenUuid);
       } else {
