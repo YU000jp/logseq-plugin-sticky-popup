@@ -68,21 +68,21 @@ import { stickyCalendarID } from '.';
     justify-content: center;
     align-items: center;
   }
-  div#sticky-actions-left {
+  div#sticky-event-left {
     position:absolute;
     bottom:0;
     font-size:small;
     background:var(--ls-primary-background-color);
     margin-right:.5em;
   }
-  div#sticky-actions-right {
+  div#sticky-event-button {
     position: absolute;
     top: .2em;
     right: 3em;
     font-size: .94em;
     background:var(--ls-primary-background-color);
   }
-  div#sticky-actions-right button {
+  div#sticky-event-button button {
     margin-left: .2em;
   }
   `);

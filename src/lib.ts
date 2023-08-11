@@ -35,7 +35,7 @@ export const stickyPosition = (elementId: string) => {
           screenWidth: width || logseq.settings?.screenWidth,
           screenHeight: height || logseq.settings?.screenHeight,
         });
-        logseq.UI.showMsg("pinned", "success");
+        logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
       } else if (elementId === stickyCalendarID) {
         logseq.updateSettings({
           calendarScreenX: x || logseq.settings?.calendarScreenX,
@@ -43,7 +43,7 @@ export const stickyPosition = (elementId: string) => {
           calendarScreenWidth: width || logseq.settings?.calendarScreenWidth,
           calendarScreenHeight: height || logseq.settings?.calendarScreenHeight,
         });
-        logseq.UI.showMsg("pinned", "success");
+        logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
       }
     }
   }
