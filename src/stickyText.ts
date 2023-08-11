@@ -2,8 +2,11 @@ import { PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { graphName } from '.';
 import { stickyPosition } from './lib';
 import { encodeHtml } from './lib';
+import { removeMarkdown } from './markdown';
 
 export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName) => {
+  if (!text) return;
+  text = removeMarkdown(text,200);
   const stickyID = `${logseq.baseInfo.id}--sticky`;
   if (flag.lock === true) {
     //
@@ -29,10 +32,10 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
     template: `
       <div style="padding:10px;overflow:auto" title="">
           <p style="font-size:0.98em;margin-bottom:2em"><span id="stickyLock" title="Lock">🔒</span> <a style="cursor:default" id="${stickyID}--text" title="${encodeHtml(text)}">${text}</a></p>
-        <div id="sticky-actions-left">
+        <div id="sticky-event-left">
           ${toPage}
         </div>
-        <div id="sticky-actions-right">
+        <div id="sticky-event-button">
           <button data-on-click="ActionUnlock" id="stickyUnlock"><span style="text-decoration:underline;font-size:1.2em" title="Unlock: Overwrites the next selected text">🔓</span></button>
           <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌</button>
         </div>
@@ -62,7 +65,7 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
         else logseq.UI.showMsg("Page not found", "error");
       }
     });
-  
+
   }, 100);
 };
 
@@ -84,7 +87,7 @@ function newStickyText() {
     template: `
           <div style="padding:10px;overflow:auto">
               <p style="font-size:0.98em;margin-bottom:2em"><a style="cursor:default" title="Select any text">📝Select any text</a></p>
-            <div id="sticky-actions-right">
+            <div id="sticky-event-button">
               <button data-on-click="stickyPinned" title="Pin: saves the position of this popup">📌Pin</button>
             </div>
           </div>
