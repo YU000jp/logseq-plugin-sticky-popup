@@ -55,6 +55,19 @@ export const stickyTextPosition = (elementId: string, message?: boolean) => {
   if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
 };
 
+export const stickyDailyMessagePosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    dailyMessageScreenX: x,
+    dailyMessageScreenY: y,
+    dailyMessageScreenWidth: width,
+    dailyMessageScreenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
+}
+
 const getRect = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect() as DOMRect;
   return {

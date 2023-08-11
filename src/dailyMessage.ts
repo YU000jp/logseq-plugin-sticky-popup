@@ -1,9 +1,9 @@
 import { getWeekdayString } from "./lib";
-import { calculateRangeBarForSettingUI } from "./settings";
 import { closeUI } from "./lib";
 import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { getDateInputJournalDay } from "./lib";
 import { setUIoverdue } from "./overdue";
+import { keyStickyDailyMessage } from ".";
 
 
 
@@ -81,30 +81,35 @@ export const dailyMessageOpenUI = (targetDay: Date, demo?: number) => {
 
 export const dailyMessageSetUI = (title: string, print: string, timeoutCancel: boolean, demo: boolean) => {
   if (print === undefined) return;
-  const width: number = calculateRangeBarForSettingUI(300, 900, logseq.settings?.width as number);
-  const height: number = calculateRangeBarForSettingUI(300, 900, logseq.settings?.height as number);
+  const width: string = logseq.settings?.dailyMessageScreenWidth || "300px"; //300-900
+  const height: string = logseq.settings?.dailyMessageScreenHeight || "300px"; //300-900
+  const left: string = logseq.settings!.dailyMessageScreenX ? logseq.settings?.dailyMessageScreenX+"px" : "300px";
+  const top: string = logseq.settings!.dailyMessageScreenY ? logseq.settings!.dailyMessageScreenY+"px" :"calc(2vh + 50px)";
   const backgroundColor = (logseq.settings?.backgroundColor as string) || "var(--ls-primary-background-color)";
   const color = (logseq.settings?.fontColor as string) || "var(--ls-primary-text-color)";
-  let left = "unset";
+  let right = "unset";
   let bottom = "unset";
   const show = (demo: boolean) => {
     closeUI("messageBox");
     logseq.provideUI({
-      key: "messageBox",
+      key: keyStickyDailyMessage,
       reset: true,
       template: `
     <div style="padding:0.5em">
     ${print}
     </div>
+    <div id="sticky-event-button">
+    <button data-on-click="stickyPinnedDailyMessage" title="Pin: saves the position of this popup">📌</button>
+  </div>
   `,
       style: {
         padding: "0.5em",
         left,
-        right: "3px",
-        top: "calc(2vh + 50px)",
+        top,
+        right,
         bottom,
-        width: `${width}px`,
-        height: `${height}px`,
+        width,
+        height,
         backgroundColor,
         color,
         boxShadow: "1px 2px 5px var(--ls-secondary-background-color)",

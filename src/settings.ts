@@ -91,24 +91,6 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     default: false,
   },
   {
-    //width: 500px
-    key: "width",
-    type: "number",
-    title: "Width of the board",
-    description: "300 < 600 < 900 [px]",
-    default: 30,
-    inputAs: "range",
-  },
-  {
-    //height: 500px
-    key: "height",
-    type: "number",
-    title: "Height of the board",
-    description: "300 < 600 < 900 [px]",
-    default: 20,
-    inputAs: "range",
-  },
-  {
     key: "enableMessageBoxTimeout",
     type: "boolean",
     title: "Enable close the board timeout",

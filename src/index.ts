@@ -3,18 +3,19 @@ import { AppGraphInfo, BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq
 import { loadStickyText, stickyTextOpenUI } from './stickyText';
 import { loadMainCSS, setCSSclass } from './mainCSS';
 import { loadStickyCalendar } from './stickyCalendar';
-import { stickyTextPosition, stickyCalendarPosition } from './lib';
+import { stickyTextPosition, stickyCalendarPosition, stickyDailyMessagePosition } from './lib';
 import { fromJournals } from "./dailyMessage";
 import { settingsTemplate } from './settings';
 import { setUIoverdue } from "./overdue";
 import { onSettingsChangedForDayOfWeekMessage, dailyMessageOpenUI, } from "./dailyMessage";
 export let graphName = "";//For command pallet
-
+export const keyStickyDailyMessage = "sticky-daily-message";
 
 //main
 const main = () => {
-  const stickyID = `${logseq.baseInfo.id}--sticky`;
-  const stickyCalendarID = `${logseq.baseInfo.id}--sticky-calendar`;
+  const stickyId = `${logseq.baseInfo.id}--sticky`;
+  const stickyCalendarId = `${logseq.baseInfo.id}--sticky-calendar`;
+  const stickyDailyMessageId = `${logseq.baseInfo.id}--${keyStickyDailyMessage}`;
   //check current graph
   logseq.App.getCurrentGraph().then((graph) => {
     if (graph)  //デモグラフの場合は返り値がnull
@@ -104,8 +105,9 @@ const main = () => {
       }
       dailyMessageOpenUI(new Date());
     },
-    stickyPinned: () => stickyTextPosition(stickyID, true),
-    stickyCalendarPinned: () => stickyCalendarPosition(stickyCalendarID, true),
+    stickyPinned: () => stickyTextPosition(stickyId, true),
+    stickyCalendarPinned: () => stickyCalendarPosition(stickyCalendarId, true),
+    stickyPinnedDailyMessage: () => stickyDailyMessagePosition(stickyDailyMessageId, true),
     stickyCalendarReset: () => {
       setTimeout(() => {
         logseq.App.setRightSidebarVisible("toggle");
@@ -113,7 +115,7 @@ const main = () => {
       }, 10);
     },
     ActionUnlock: () => {
-      stickyTextPosition(stickyID);
+      stickyTextPosition(stickyId);
       logseq.updateSettings({
         stickyLock: false,
         screenPage: "",
@@ -124,14 +126,14 @@ const main = () => {
       if (stickyLock) stickyLock.style.display = "none";
       const stickyUnlock = parent.document.getElementById("stickyUnlock") as HTMLSpanElement | null;
       if (stickyUnlock) stickyUnlock.style.display = "none";
-      const textElement = parent.document.getElementById(`${stickyID}--text`) as HTMLDivElement | null;
+      const textElement = parent.document.getElementById(`${stickyId}--text`) as HTMLDivElement | null;
       if (textElement) textElement.innerHTML = "";
       logseq.UI.showMsg("Unlocked", "success");
     },
     popupOpenFromToolbar: () => {
       if (logseq.settings!.stickyTextVisible !== "None") loadStickyText();
       if (logseq.settings!.stickyCalendarVisible !== "None") {
-        const div = parent.document.getElementById(stickyCalendarID) as HTMLDivElement | null;
+        const div = parent.document.getElementById(stickyCalendarId) as HTMLDivElement | null;
         if (!div) {
           loadStickyCalendar();
           setTimeout(() => {
@@ -145,7 +147,7 @@ const main = () => {
 
 
   logseq.beforeunload(async () => {
-    await stickyTextPosition(stickyID);
+    await stickyTextPosition(stickyId);
   });
 
 
