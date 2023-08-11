@@ -1,7 +1,7 @@
 import { BlockEntity, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { format, subDays, subWeeks } from 'date-fns';
-import { getStringInputDate, closeUI } from "./lib";
-import removeMd from "remove-markdown";
+import { getStringInputDate, closeUI, } from "./lib";
+//import removeMd from "remove-markdown";
 
 //Overdue
 export const setUIoverdue = async (demo: boolean) => {
@@ -63,9 +63,9 @@ export const setUIoverdue = async (demo: boolean) => {
           linkList.push(page.uuid);
         }
       }
-
+      //if (item.properties) content = await removeProperties(item.properties, item.content);
       //モジュールでマークダウンを取り除く
-      content = removeMd(content);  
+      //content = removeMd(content);//SCHEDULED:が消えてしまう
 
       print += `<li><span class="block-marker ${item.marker}" id="overdueBlock--${item.uuid}" title="Open in right sidebar">${item.marker}</span><span class="overDueContent">${content}</span>`;
       //item.scheduledをyyyy/mm/dd EEE形式に変換し、前後に<と>をつける

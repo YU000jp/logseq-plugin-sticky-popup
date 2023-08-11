@@ -1,3 +1,4 @@
+import { BlockEntity } from "@logseq/libs/dist/LSPlugin";
 
 export const getWeekdayString = (targetDay: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string) || "default", { weekday: "long" }).format(targetDay);
 
@@ -25,6 +26,21 @@ export function encodeHtml(str: string): string {
   return String(str).replace(/[&<>"'/]/g, function (s) {
     return htmlEntities[s];
   });
+}
+
+export async function removeProperties(properties, blockContent: string): Promise<string> {
+  if (!properties) return blockContent;
+  const keys = Object.keys(properties);
+  for (let j = 0; j < keys.length; j++) {
+    let key = keys[j];
+    const values = properties[key];
+    //backgroundColorをbackground-colorにする
+    //キーの途中で一文字大文字になっている場合は小文字にしてその前にハイフンを追加する
+    key = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+    blockContent = blockContent.replace(`${key}:: ${values}`, "");
+    blockContent = blockContent.replace(`${key}::`, "");
+  }
+  return blockContent;
 }
 
 //ポジションを記録する (カレンダー用)
