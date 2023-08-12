@@ -7,7 +7,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     title: "--- Sticky Text ---",
     type: "heading",
     default: "",
-    description: "Select string and click the same block. Registered in pop-ups and automatically locked. Markdown is not reflected.",
+    description: "Select string and click the same block. Registered in pop-ups and automatically locked. Markdown is not reflected. Can be called from 📌 button on toolbar.",
   },
   {
     key: "stickyTextVisible",
@@ -51,7 +51,10 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     title: "--- Overdue task board ---",
     type: "heading",
     default: "",
-    description: "Display overdue tasks from yesterday (If found). Enabled when toggles are on. Can be called from the toolbar button.",
+    description: `
+    Display overdue tasks from yesterday (If found).
+    Enabled when toggles are on. Can be called from ⏳ button on toolbar.`
+    ,
   },
   {
     key: "enableOverdueOnJournalTemplate",
@@ -72,7 +75,12 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     title: "--- Daily message board ---",
     type: "heading",
     default: "",
-    description: "Display user message each day. Supports HTML instead of markdown. Enabled when toggles are on. Can be called from the toolbar button. Use direct file paths instead of indirect.",
+    description: `
+    Display user message each day.
+    Enabled when toggles are on. Can be called from 💬 button on toolbar.
+
+    ⚠️Supports HTML instead of markdown. Use direct file paths instead of indirect.
+    `,
   },
   {
     //messageBoard
@@ -157,7 +165,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "monday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Monday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Monday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },
@@ -172,7 +180,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "tuesday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Tuesday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Tuesday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },
@@ -187,7 +195,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "wednesday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Wednesday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Wednesday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },
@@ -202,7 +210,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "thursday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Thursday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Thursday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },
@@ -217,7 +225,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "friday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Friday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Friday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },
@@ -232,7 +240,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "saturday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Saturday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Saturday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },
@@ -247,7 +255,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     key: "sunday",
     type: "string",
     inputAs: "textarea",
-    title: "Message for Sunday (Supports HTML instead of markdown)",
+    title: "Message (HTML) for Sunday ⚠️",
     description: "To view the modified content, toggle it off and then on again.",
     default: "",
   },

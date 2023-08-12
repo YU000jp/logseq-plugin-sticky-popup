@@ -136,6 +136,9 @@ export function loadMainCSS() {
     color:var(--ls-link-text-color)
   }
   div#root main div[data-id="${baseId}"] div.cp__plugins-settings-inner div.heading-item {
+    margin-top: 1em;
+    padding-top:1em;
+    padding-bottom:.5em;
     outline:2px solid;
   }
   `);
