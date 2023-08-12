@@ -60,22 +60,72 @@
 
 ### Plugin Settings
 
+#### Sticky Text
+
 - (Sticky Text) Visible or not: select
-   - `Journal`
-   - `Not-Journal`
-   - `All` default
-   - `None`
-- (Sticky Text) Showing over sidebar or not: boolean
-   - `true` default
-   - `false`
+  - `Journal`
+  - `Not-Journal`
+  - `All` default
+  - `None`
+- (Sticky Text) Showing over sidebar or not: toggle
+  - `true` default
+  - `false`
+
+#### Sticky Calendar
+
 - (Sticky Calendar) Visible or not: select
-   - `Journal` default
-   - `Not-Journal`
-   - `All`
-   - `None`
-- (Sticky Calendar) Showing over sidebar or not: boolean
-   - `true` default
-   - `false`
+  - `Journal` default
+  - `Not-Journal`
+  - `All`
+  - `None`
+- (Sticky Calendar) Showing over sidebar or not: toggle
+  - `true` default
+  - `false`
+
+#### Overdue task board
+
+- Show the board when journal template is loaded: toggle
+  `true`
+  `false` default
+- Show the board when Logseq is loaded: toggle
+  `true`
+  `false` default
+
+#### Daily Message
+
+- Show the board when today journal is created: toggle
+  `true` default
+  `false`
+- Show the board when Logseq loaded: toggle
+  `true` default
+  `false`
+- Enable close the board timeout: toggle
+  `true` default
+  `false`
+- Close the board timeout [ms]: select
+  - [`8000`, `9000`, `10000` default, `12000`, `14000`, `16000`, `18000`, `20000`]
+- Background color (from theme): select
+  - `var(--ls-primary-background-color)` default
+  - `var(--ls-secondary-background-color)`
+  - `var(--ls-tertiary-background-color)`
+  - `var(--ls-quaternary-background-color)`
+  - `var(--ls-table-tr-even-background-color)`
+  - `var(--ls-block-properties-background-color)`
+  - `var(--ls-page-properties-background-color)`
+- Font Color (from theme): select
+  - `var(--ls-primary-text-color)` default
+  - `var(--ls-secondary-text-color)`
+  - `var(--ls-title-text-color)`
+  - `var(--ls-link-text-color)`
+- The board title, select localize (your language) or English: select
+  - `default` default
+  - `en`: English
+- Show Monday message board: toggle
+  - `true`
+  - `false` default
+- Message for Monday (Supports HTML instead of markdown)
+  - (textarea)
+- alias Tuesday...Sunday
 
 ## Question
 
