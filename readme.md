@@ -54,7 +54,7 @@
 
 #### As showcase
 
-- Display user favorite image by HTML each day.
+- Display user favorite image by HTML each day. `<img src="FilePath"/>`
 
 ## Getting Started
 
