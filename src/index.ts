@@ -3,7 +3,9 @@ import { AppGraphInfo, BlockEntity, LSPluginBaseInfo, PageEntity } from "@logseq
 import { loadStickyText, stickyTextOpenUI } from './stickyText';
 import { loadMainCSS, setCSSclass } from './mainCSS';
 import { loadStickyCalendar } from './stickyCalendar';
-import { stickyTextPosition, stickyCalendarPosition, stickyDailyMessagePosition } from './lib';
+import { stickyCalendarPosition } from "./stickyCalendar";
+import { stickyTextPosition } from "./stickyText";
+import { stickyDailyMessagePosition } from "./dailyMessage";
 import { fromJournals } from "./dailyMessage";
 import { settingsTemplate } from './settings';
 import { setUIoverdue } from "./overdue";

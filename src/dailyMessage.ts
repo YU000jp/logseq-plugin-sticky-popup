@@ -4,6 +4,7 @@ import { LSPluginBaseInfo, PageEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { getDateInputJournalDay } from "./lib";
 import { setUIoverdue } from "./overdue";
 import { keyStickyDailyMessage } from ".";
+import { getRect } from "./lib";
 
 
 
@@ -262,5 +263,17 @@ export const fromJournals = async (title: string) => {
   }
   //Load overdue
   if (logseq.settings!.enableOverdueOnJournalTemplate === true) await setUIoverdue(false);
+};
+export const stickyDailyMessagePosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    dailyMessageScreenX: x,
+    dailyMessageScreenY: y,
+    dailyMessageScreenWidth: width,
+    dailyMessageScreenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
 };
 

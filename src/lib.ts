@@ -1,4 +1,3 @@
-import { BlockEntity } from "@logseq/libs/dist/LSPlugin";
 
 export const getWeekdayString = (targetDay: Date): string => new Intl.DateTimeFormat((logseq.settings?.localizeOrEnglish as string) || "default", { weekday: "long" }).format(targetDay);
 
@@ -28,63 +27,23 @@ export function encodeHtml(str: string): string {
   });
 }
 
-export async function removeProperties(properties, blockContent: string): Promise<string> {
-  if (!properties) return blockContent;
-  const keys = Object.keys(properties);
-  for (let j = 0; j < keys.length; j++) {
-    let key = keys[j];
-    const values = properties[key];
-    //backgroundColorをbackground-colorにする
-    //キーの途中で一文字大文字になっている場合は小文字にしてその前にハイフンを追加する
-    key = key.replace(/([A-Z])/g, "-$1").toLowerCase();
-    blockContent = blockContent.replace(`${key}:: ${values}`, "");
-    blockContent = blockContent.replace(`${key}::`, "");
-  }
-  return blockContent;
-}
+// export async function removeProperties(properties, blockContent: string): Promise<string> {
+//   if (!properties) return blockContent;
+//   const keys = Object.keys(properties);
+//   for (let j = 0; j < keys.length; j++) {
+//     let key = keys[j];
+//     const values = properties[key];
+//     //backgroundColorをbackground-colorにする
+//     //キーの途中で一文字大文字になっている場合は小文字にしてその前にハイフンを追加する
+//     key = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+//     blockContent = blockContent.replace(`${key}:: ${values}`, "");
+//     blockContent = blockContent.replace(`${key}::`, "");
+//   }
+//   return blockContent;
+// }
 
-//ポジションを記録する (カレンダー用)
-export const stickyCalendarPosition = (elementId: string, message?: boolean) => {
-  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
-  if (!element) return;
-  const { x, y, width, height } = getRect(element);
-  logseq.updateSettings({
-    calendarScreenX: x,
-    calendarScreenY: y,
-    calendarScreenWidth: width,
-    calendarScreenHeight: height,
-  });
-  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
-};
-
-//ポジションを記録する (テキスト用)
-export const stickyTextPosition = (elementId: string, message?: boolean) => {
-  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
-  if (!element) return;
-  const { x, y, width, height } = getRect(element);
-  logseq.updateSettings({
-    screenX: x,
-    screenY: y,
-    screenWidth: width,
-    screenHeight: height,
-  });
-  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
-};
-
-export const stickyDailyMessagePosition = (elementId: string, message?: boolean) => {
-  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
-  if (!element) return;
-  const { x, y, width, height } = getRect(element);
-  logseq.updateSettings({
-    dailyMessageScreenX: x,
-    dailyMessageScreenY: y,
-    dailyMessageScreenWidth: width,
-    dailyMessageScreenHeight: height,
-  });
-  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
-}
-
-const getRect = (element: HTMLElement) => {
+//位置データの返却
+export const getRect = (element: HTMLElement) => {
   const rect = element.getBoundingClientRect() as DOMRect;
   return {
     x: Math.round(rect.x) as number,
@@ -98,4 +57,12 @@ export const closeUI = (key: string) => {
   const element = parent.document.getElementById(logseq.baseInfo.id + `--${key}`) as HTMLDivElement;
   if (element) element.remove();
 };
+//for setting UI
+
+
+//レンジバー計算用
+// export const calculateRangeBarForSettingUI = (min: number, max: number, value: number): number => {
+//   if (value < 1) value = 1;
+//   return (value * (max - min) / 100) + min;
+// };
 

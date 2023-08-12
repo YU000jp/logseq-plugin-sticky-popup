@@ -69,7 +69,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
   },
   {
     key: "headerForStickyMessage",
-    title: "--- Sticky Message ---",
+    title: "--- Daily Message ---",
     type: "heading",
     default: "",
     description: "",
@@ -252,11 +252,4 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     default: "",
   },
 ];
-
-
-//for setting UI
-export const calculateRangeBarForSettingUI = (min: number, max: number, value: number): number => {
-  if (value < 1) value = 1;
-  return (value * (max - min) / 100) + min;
-};
 

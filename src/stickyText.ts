@@ -1,8 +1,9 @@
 import { PageEntity } from '@logseq/libs/dist/LSPlugin.user';
 import { graphName } from '.';
-import { stickyTextPosition } from './lib';
 import { encodeHtml } from './lib';
 import { removeMarkdown } from './markdown';
+import { getRect } from "./lib";
+
 
 export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName) => {
   if (!text) return;
@@ -69,6 +70,7 @@ export const stickyTextOpenUI = (flag, text, x, y, width, height, uuid, pageName
   }, 100);
 };
 
+
 //Sticky Text
 export function loadStickyText() {
   //読み込み時
@@ -106,3 +108,17 @@ function newStickyText() {
     },
   });
 }
+
+//ポジションを記録する (テキスト用)
+export const stickyTextPosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    screenX: x,
+    screenY: y,
+    screenWidth: width,
+    screenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
+};

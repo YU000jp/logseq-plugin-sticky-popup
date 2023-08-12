@@ -1,3 +1,6 @@
+import { getRect } from "./lib";
+
+
 //Sticky Calendar
 export function loadStickyCalendar() {
   logseq.provideUI({
@@ -23,3 +26,17 @@ export function loadStickyCalendar() {
     },
   });
 }
+
+//ポジションを記録する (カレンダー用)
+export const stickyCalendarPosition = (elementId: string, message?: boolean) => {
+  const element = parent.document.getElementById(elementId) as HTMLDivElement || null;
+  if (!element) return;
+  const { x, y, width, height } = getRect(element);
+  logseq.updateSettings({
+    calendarScreenX: x,
+    calendarScreenY: y,
+    calendarScreenWidth: width,
+    calendarScreenHeight: height,
+  });
+  if (message) logseq.UI.showMsg("pinned", "success", { timeout: 1000 });
+};
