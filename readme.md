@@ -145,6 +145,8 @@
 ## Question
 
 - To reopen popups, press on `📌`button in the toolbar
+  - For Daily message board: `💬`
+  - For Overdue tasks board: `⏳`
 
 ## Showcase / Questions / Ideas / Help
 
