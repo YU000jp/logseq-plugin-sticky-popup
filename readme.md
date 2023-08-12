@@ -44,6 +44,18 @@
   
 </details>
 
+### Overdue tasks board
+
+- Display overdue tasks from yesterday. (If found)
+
+### Daily message board
+
+- Display user message each day. Supports HTML instead of markdown.
+
+#### As showcase
+
+- Display user favorite image by HTML each day.
+
 ## Getting Started
 
 ### Install from Logseq Marketplace
@@ -84,6 +96,7 @@
 
 #### Overdue task board
 
+> Enabled when toggles are on. Can be called from the toolbar button.
 - Show the board when journal template is loaded: toggle
   `true`
   `false` default
@@ -91,8 +104,9 @@
   `true`
   `false` default
 
-#### Daily Message
+#### Daily message board
 
+> Enabled when toggles are on. Can be called from the toolbar button.
 - Show the board when today journal is created: toggle
   `true` default
   `false`
