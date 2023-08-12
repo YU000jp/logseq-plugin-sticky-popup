@@ -51,7 +51,7 @@ export const settingsTemplate: SettingSchemaDesc[] = [
     title: "--- Overdue task board ---",
     type: "heading",
     default: "",
-    description: "",
+    description: "Display overdue tasks from yesterday (If found). Enabled when toggles are on. Can be called from the toolbar button.",
   },
   {
     key: "enableOverdueOnJournalTemplate",
@@ -69,10 +69,10 @@ export const settingsTemplate: SettingSchemaDesc[] = [
   },
   {
     key: "headerForStickyMessage",
-    title: "--- Daily Message ---",
+    title: "--- Daily message board ---",
     type: "heading",
     default: "",
-    description: "",
+    description: "Display user message each day. Supports HTML instead of markdown. Enabled when toggles are on. Can be called from the toolbar button. Use direct file paths instead of indirect.",
   },
   {
     //messageBoard
