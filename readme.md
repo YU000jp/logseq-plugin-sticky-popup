@@ -55,6 +55,7 @@
 #### As showcase
 
 - Display user favorite image by HTML each day. `<img src="FilePath"/>`
+> ⚠️Use direct file paths instead of indirect
 
 ## Getting Started
 
