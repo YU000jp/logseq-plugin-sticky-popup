@@ -2,29 +2,29 @@
 //end Setting changed
 
 //set CSS class
-export const setCSSclass=()=> {
+export const setCSSclass = () => {
   if (logseq.settings?.stickyTextVisible) {
-    parent.document.body.classList.add(`sp-textVisible-${logseq.settings.stickyTextVisible}`);
+    parent.document.body.classList.add(`sp-textVisible-${logseq.settings.stickyTextVisible}`)
   }
   if (logseq.settings?.stickyCalendarVisible) {
-    parent.document.body.classList.add(`sp-calendarVisible-${logseq.settings.stickyCalendarVisible}`);
+    parent.document.body.classList.add(`sp-calendarVisible-${logseq.settings.stickyCalendarVisible}`)
   }
   if (!logseq.settings?.stickyTextZIndex || logseq.settings?.stickyTextZIndex === true) {
-    parent.document.body.classList.add("sp-textZIndex");
+    parent.document.body.classList.add("sp-textZIndex")
   }
   if (!logseq.settings?.stickyCalendarZIndex || logseq.settings?.stickyCalendarZIndex === true) {
-    parent.document.body.classList.add("sp-calendarZIndex");
+    parent.document.body.classList.add("sp-calendarZIndex")
   }
-};
+}
 //end set CSS class
 
 
 //main CSS
-export const loadMainCSS=()=> {
-  const baseId = logseq.baseInfo.id;
-  if (baseId === undefined) throw new Error("baseId is undefined");
-  const stickyId = `${baseId}--sticky`;
-  const stickyCalendarId = `${baseId}--sticky-calendar`;
+export const loadMainCSS = () => {
+  const baseId = logseq.baseInfo.id
+  if (baseId === undefined) throw new Error("baseId is undefined")
+  const stickyId = `${baseId}--sticky`
+  const stickyCalendarId = `${baseId}--sticky-calendar`
   logseq.provideStyle(String.raw`
   body{
     &.is-pdf-active div#${stickyId},
@@ -49,22 +49,10 @@ export const loadMainCSS=()=> {
       z-index: var(--ls-z-index-level-5);
     }
     /* require Logseq v0.9.10 or later */
-    &:has(div#root>main.ls-right-sidebar-open) div:is(#${baseId}--overdue,#${baseId}--messageBox) {
+    &:has(>div#root>main.ls-right-sidebar-open)>div:is(#${baseId}--overdue,#${baseId}--messageBox) {
       display: none;
     }
     &>div#root>div>main {
-      & div#${baseId}--overdue {
-        & span.block-marker {
-          cursor: pointer;
-          text-decoration: underline;
-          padding: 0 0.8em;
-          border: 1px solid;
-          margin-right: 0.8em;
-        }
-        & li {
-          margin-bottom: 0.5em;
-        }
-      }
       & div[data-id="${baseId}"]{
         & textarea.form-input {
           height: 12em;
@@ -128,6 +116,18 @@ export const loadMainCSS=()=> {
         }
       }
     }
+    &>div#${baseId}--overdue {
+      & span.block-marker {
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 0 0.8em;
+        border: 1px solid;
+        margin-right: 0.8em;
+      }
+      & li {
+        margin-bottom: 0.5em;
+      }
+    }
     &>div[data-ref="${baseId}"]{
       & div#${stickyId} {
         min-width: 260px;
@@ -166,5 +166,5 @@ export const loadMainCSS=()=> {
       }
     }
   }
-  `);
-};
+  `)
+}
