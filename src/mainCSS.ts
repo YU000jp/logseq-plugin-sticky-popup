@@ -60,22 +60,22 @@ export const loadMainCSS = () => {
         }
         & div[data-key="backgroundColor"] select>option {
           &[value="var(--ls-primary-background-color)"] {
-            background: var(--ls-primary-background-color)
+            background-color: var(--ls-primary-background-color)
           }
           &[value="var(--ls-secondary-background-color)"] {
-            background: var(--ls-secondary-background-color)
+            background-color: var(--ls-secondary-background-color)
           }
           &[value="var(--ls-tertiary-background-color)"] {
-            background: var(--ls-tertiary-background-color)
+            background-color: var(--ls-tertiary-background-color)
           }
           &[value="var(--ls-quaternary-background-color)"] {
-            background: var(--ls-quaternary-background-color)
+            background-color: var(--ls-quaternary-background-color)
           }
           &[value="var(--ls-table-tr-even-background-color)"] {
-            background: var(--ls-table-tr-even-background-color)
+            background-color: var(--ls-table-tr-even-background-color)
           }
           &[value="var(--ls-block-properties-background-color)"] {
-            background: var(--ls-block-properties-background-color)
+            background-color: var(--ls-block-properties-background-color)
           }
           &[value="var(--ls-page-properties-background-color)"] {
             color: var(--ls-page-properties-background-color)
@@ -151,7 +151,7 @@ export const loadMainCSS = () => {
         position:absolute;
         bottom:0;
         font-size:small;
-        background:var(--ls-primary-background-color);
+        background-color:var(--ls-primary-background-color);
         margin-right:.5em;
       }
       & div#sticky-event-button {
@@ -159,7 +159,7 @@ export const loadMainCSS = () => {
         top: .2em;
         right: 3em;
         font-size: .94em;
-        background:var(--ls-primary-background-color);
+        background-color:var(--ls-primary-background-color);
       }
       & div#sticky-event-button button {
         margin-left: .2em;
