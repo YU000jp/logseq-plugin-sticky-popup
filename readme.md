@@ -1,18 +1,20 @@
 # Logseq Plugin: *Sticky Popup* 📍
 
 - Show selected text in a movable pop-up and positioning calendar.
+- Displays user messages by day of the week, with the added functionality of reminding about overdue tasks. When the Journal template is loaded, they are displayed. 
 
-- Displays user messages by day of the week, with the added functionality of reminding about overdue tasks. When the Journal template is loaded, they are displayed. 2023/08/11🆙
+<div align="right">
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
 [![License](https://img.shields.io/github/license/YU000jp/logseq-plugin-sticky-popup?color=blue)](https://github.com/YU000jp/logseq-plugin-sticky-popup/LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) Published 2023/04/18
+[![Downloads](https://img.shields.io/github/downloads/YU000jp/logseq-plugin-sticky-popup/total.svg)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases) Published 2023/04/18 <a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
+</div>
 
 ## Features
 
 - Pop-ups possible to be moved around and resized.
 
-![demo image](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
+  > ![demo image](https://user-images.githubusercontent.com/111847207/232673738-4e21395a-b04b-4baf-82cc-c5ff2748bbce.gif)
 
 ### Sticky Text (Pop-up)
 
@@ -57,6 +59,8 @@
 - Display user favorite image by HTML each day. `<img src="FilePath"/>`
 > ⚠️Use direct file paths instead of indirect
 
+---
+
 ## Getting Started
 
 ### Install from Logseq Marketplace
@@ -70,6 +74,12 @@
 ### Usage
 
 - Open the plugin settings screen and do the necessary changes. By default, Sticky Calendar is set to "off" in the initial configuration.
+
+### Toolbar Icon
+
+- To reopen popups, press on `📌`button in the toolbar
+  - For Daily message board: `💬`
+  - For Overdue tasks board: `⏳`
 
 ### Plugin Settings
 
@@ -142,31 +152,15 @@
   - (textarea)
 - alias Tuesday...Sunday
 
-## Question
-
-- To reopen popups, press on `📌`button in the toolbar
-  - For Daily message board: `💬`
-  - For Overdue tasks board: `⏳`
+---
 
 ## Showcase / Questions / Ideas / Help
 
 > Go to the [Discussions](https://github.com/YU000jp/logseq-plugin-sticky-popup/discussions) tab to ask and find this kind of things.
 
-## Author
-
-- GitHub: [YU000jp](https://github.com/YU000jp)
-
 ## Prior art & Credit
 
-### Library
-
-- [@logseq/libs](https://logseq.github.io/plugins/)
-- [xyhp915/ moveable plugin UI container](https://github.com/logseq/logseq/pull/3045)
-
-### Icon
-
-- [icooon-mono.com](https://icooon-mono.com/)
-
----
-
-<a href="https://www.buymeacoffee.com/yu000japan"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=yu000japan&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
+- Library > [@logseq/libs](https://logseq.github.io/plugins/)
+- Library > [@xyhp915/ moveable plugin UI container](https://github.com/logseq/logseq/pull/3045)
+- Icon > [icooon-mono.com](https://icooon-mono.com/)
+- Author >[@YU000jp](https://github.com/YU000jp)
