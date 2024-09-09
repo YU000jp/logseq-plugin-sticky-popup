@@ -3,6 +3,9 @@
 - Show selected text in a movable pop-up and positioning calendar.
 - Displays user messages by day of the week, with the added functionality of reminding about overdue tasks. When the Journal template is loaded, they are displayed. 
 
+> [!WARNING]
+This plugin does not work with Logseq db version.
+
 <div align="right">
 
 [![latest release version](https://img.shields.io/github/v/release/YU000jp/logseq-plugin-sticky-popup)](https://github.com/YU000jp/logseq-plugin-sticky-popup/releases)
